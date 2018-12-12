@@ -9,7 +9,7 @@
 			<span class="primary">权限分配</span>
 		</div>
 	</div>
-	<form class="layui-form form-main" action="">
+	<form class="layui-form form-main" action="" lay-filter="formTest">
 		<div class="layui-form-item role-view">
 			<label class="layui-form-label">角色查看：</label>
 		</div>
@@ -46,7 +46,7 @@
 		<div class="layui-form-item access-form">
 			<label class="layui-form-label">档案管理：</label>
 			<div class="layui-input-block">
-				<input type="checkbox" name="pid1024" title="合同审核" lay-skin="primary"><input type="checkbox" name="pid1022" title="档案归档" lay-skin="primary"> <input type="checkbox" name="pid1023" title="档案借阅" lay-skin="primary">
+				<input type="checkbox" name="pid1024" title="合同审核" lay-skin="primary"> <input type="checkbox" name="pid1022" title="档案归档" lay-skin="primary"> <input type="checkbox" name="pid1023" title="档案借阅" lay-skin="primary">
 			</div>
 		</div>
 

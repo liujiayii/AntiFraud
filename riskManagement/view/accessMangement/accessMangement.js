@@ -128,6 +128,7 @@ function accessMangement() {
 }
 
 function accessControl() {
+	onLoadPage("id");
 	layui.use([ 'form', 'layer' ], function() {
 		var form = layui.form, layer = layui.layer;
 
@@ -196,11 +197,20 @@ function accessControl() {
 			});
 			return false; // 阻止表单跳转。如果需要表单跳转，去掉这段即可。
 		});
+
 	})
-	onLoadPage("id");
-
 }
-
+var formData = {}
+//延迟赋值
+function formVal() {
+	layui.use([ 'form'], function() {
+		var form = layui.form;
+		// 表单初始赋值
+		console.log('赋值');
+		form.val("formTest", formData)
+		console.log('延迟赋值');
+	})
+}
 // 页面加载执行
 function onLoadPage(name) {
 	var id = getHrefParam(name);
@@ -208,16 +218,12 @@ function onLoadPage(name) {
 		id : id
 	}, function(result) {
 		console.log(result);
-
 		console.log('复现');
-		for (var i = 0; i < $("[type='checkbox']").length; i++) {
-			for (var n = 0; n < result.data.length; n++) {
-				if ($($("[type='checkbox']")[i]).attr('name').match(result.data[n].pid)) {
-					$($("[type='checkbox']")[i]).prop('checked', 'checked');
-				}
-			}
+		for (var n = 0; n < result.data.length; n++) {
+			formData['pid' + result.data[n].pid] = true
 		}
-
+		console.log(formData)
+		formVal();
 	})
 }
 
