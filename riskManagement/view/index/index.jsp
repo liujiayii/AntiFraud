@@ -71,6 +71,14 @@
 			</div>
 		</div>
 	</div>
+	<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+		<legend>
+			操作日志
+		</legend>
+	</fieldset>
+	<div style="text-align: center;" class="margin-top-15">
+		<table id="realEstateMortgage" lay-filter="realEstateMortgage"></table>
+	</div>
 
 
 </div>

@@ -24,7 +24,7 @@
 					<option value=""></option>
 					<option value="0">正常</option>
 					<option value="1">借出</option>
-					<!-- <option value="2">消档</option> -->
+					<option value="2">消档</option>
 				</select>
 			</div>
 		</div>

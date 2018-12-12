@@ -1,19 +1,7 @@
 $(document).ready(function() {
 	setInterval(function() {
 		var mytime = new Date();
-		var y = mytime.getFullYear();
-		var m = mytime.getMonth();
-		m = m < 10 ? '0' + m : m;
-		var d = mytime.getDate();
-		d = d < 10 ? '0' + d : d;
-		var h = mytime.getHours();
-		h = h < 10 ? '0' + h : h;
-		var mm = mytime.getMinutes();
-		mm = mm < 10 ? '0' + mm : mm;
-		var s = mytime.getSeconds();
-		s = s < 10 ? '0' + s : s;
-		var time = y + "-" + m + "-" + d + "  " + h + ":" + mm + ":" + s;
-		$("#date").html(time);
+		$("#date").html(timeStamp2String(mytime));
 	}, 1000)
 	var countArr = [];
 	var moneyArr = [];
@@ -114,7 +102,7 @@ $(document).ready(function() {
 	var myCountOption = {
 		title : {
 			text : '统计贷款总数',
-			subtext : '纯属虚构',
+			subtext : '截至目前',
 			x : 'center'
 		},
 		tooltip : {
@@ -153,7 +141,7 @@ $(document).ready(function() {
 	var myMoneyOption = {
 		title : {
 			text : '统计贷款金额',
-			subtext : '纯属虚构',
+			subtext : '截至目前',
 			x : 'center'
 		},
 		tooltip : {
@@ -195,3 +183,46 @@ $(document).ready(function() {
 	myMoney.setOption(myMoneyOption);
 
 });
+
+layui.use([ 'table' ], function() {
+	var table = layui.table;
+	// 第一个实例
+	table.render({
+		elem : '#realEstateMortgage',
+		url : '/Log/showLog.action',
+		page : true,
+		id : 'testReload',
+		even : true,
+		skin : 'line', // 行边框风格
+		response : {
+			statusCode : 1
+		// 规定成功的状态码，默认：0
+		},
+		cols : [ [ // 表头
+		{
+			field : 'admin',
+			title : '操作人'
+		}, {
+			field : 'operation',
+			title : '操作'
+		}, {
+			field : 'createDate',
+			title : '操作时间',
+			templet : function(d) {
+				return timeStamp2String(d.createDate)
+			}
+		}] ]
+	});	
+})
+//格式化Date日期时间数据(yyyy-MM-dd hh:mm:ss)
+function timeStamp2String(time) {
+	var datetime = new Date();
+	datetime.setTime(time);
+	var year = datetime.getFullYear();
+	var month = datetime.getMonth() + 1 < 10 ? "0" + (datetime.getMonth() + 1) : datetime.getMonth() + 1;
+	var date = datetime.getDate() < 10 ? "0" + datetime.getDate() : datetime.getDate();
+	var hour = datetime.getHours() < 10 ? "0" + datetime.getHours() : datetime.getHours();
+	var minute = datetime.getMinutes() < 10 ? "0" + datetime.getMinutes() : datetime.getMinutes();
+	var second = datetime.getSeconds() < 10 ? "0" + datetime.getSeconds() : datetime.getSeconds();
+	return year + "-" + month + "-" + date + " " + hour + ":" + minute + ":" + second;
+}

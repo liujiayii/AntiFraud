@@ -1,27 +1,37 @@
-// 激活二级导航
+//激活二级导航
 $(document).ready(function() {
-	$($('#documentMangement dd')[1]).addClass('layui-this');
+	$($('#documentMangement dd')[2]).addClass('layui-this');
 	$($('.layui-side .layui-nav-item')[5]).addClass('layui-nav-itemed');
 });
 
 
-function documentFiling() {
+function documentBorrowing() {
 	layui.use([ 'table' ], function() {
 		var table = layui.table;
+
 		// 第一个实例
 		table.render({
 			elem : '#realEstateMortgage',
-			url : '/RecordManageSave/findRecordSaveList.action',
+			url : '/RecordManageBorrow/findRecordBorrowList.action',
 			page : {
 				theme : '#405467'
 			},
 			id : 'testReload',
 			even : true,
+			skin : 'line', // 行边框风格
 			response : {
 				statusCode : 1
 			// 规定成功的状态码，默认：0
 			},
-			skin : 'line', // 行边框风格
+			parseData : function(res) { // res 即为原始返回的数据
+				return {
+					"code" : res.code, // 解析接口状态
+					"msg" : res.msg, // 解析提示文本
+					"count" : res.count, // 解析数据长度
+					"data" : res.data
+				// 解析数据列表
+				};
+			},
 			cols : [ [ // 表头
 			{
 				field : 'report_id',
@@ -101,23 +111,22 @@ function documentFiling() {
 		// 监听行工具事件
 		table.on('tool(realEstateMortgage)', function(obj) {
 			var data = obj.data;
-			console.log(obj);
 			if (obj.event == 'see') {
-				window.location.href = "documentFilingInfo.jsp?report_id=" + data.report_id;
+				window.location.href = "documentBorrowingInfo.jsp?id=" + data.id + "&report_id=" + data.report_id;
 			}
 		});
 
 	});
 }
-// 详情页面加载执行
 
+// 详情页面加载执行
 var formData = null;
 
 function onLoadPage(name) {
-	
+	console.log('aaa');
 	var report_id = getHrefParam(name);
-	console.log(report_id);
-	$.ajax({
+	$.ajax({    
+		//url : '/RecordManageBorrow/getRecordLastByReportId.action',
 		url : '/RecordManageSave/findRecordByRecordId.action',
 		type : 'post',
 		dataType : 'json',
@@ -130,6 +139,7 @@ function onLoadPage(name) {
 			formData = result;
 		}
 	});
+	//console.log(formData);
 }
 // 获取地址栏参数，name:参数名称
 function getHrefParam(key) {
@@ -143,74 +153,44 @@ function getHrefParam(key) {
 	}
 }
 
-function documentFilingAdd() {
+function documentBorrowingInfo() {
 	onLoadPage("report_id");
-	layui.use([ 'form' ], function() {
-		var form = layui.form;
+	//console.log(formData);
+	layui.use([ 'form', 'table' ], function() {
+		var form = layui.form, table = layui.table;
 
 		// 表单初始赋值
 
 		form.val('example', {
-			"entry_number" : formData.data.entry_number, // "name": "value"
+			"report_id" : formData.data[0].report_id, // "name": "value"
+			'status' : formData.data[0].status,
+			'read_time' : formData.data.read_time,
+			'read_name' : formData.data[0].read_name,
+			'return_time' : formData.data.return_time,
 			'archivet_location' : formData.data.archivet_location,
+			'create_name' : formData.data.create_name
 		})
 		// 监听提交
-		form.on('submit(formDemo)', function(data) {
-			console.log(data.field);
+		form.on('submit(borrowInfoBtn)', function(data) {
+			// layer.msg(JSON.stringify(data.field));
+			/*if (data.field.status == 0) {
+				layer.msg('如需返回，请点取消');
+				return;
+			}
+			if (data.field.status == 1) {
+				layer.msg('当前档案处于消档状态，不能执行修改操作！');
+				return;
+			}*/
+			if (data.field.status == 2) {
+				layer.msg('当前档案处于消档状态，不能执行修改操作！');
+				return;
+			}
+			
 			$.ajax({
-				url : '/RecordManageSave/addRecord.action',
+				url : '/RecordManageBorrow/addRecordBorrow.action',
 				type : 'post',
 				dataType : 'json',
 				data : data.field,
-				success : function(data) {
-					console.log(data);
-					if (data.code == 1) {
-						layer.alert('修改成功', {
-							skin : 'layui-layer-molv' // 样式类名
-							,
-							closeBtn : 0
-						}, function() {
-							window.location.href = "documentFiling.jsp";
-						});
-					} else {
-						console.log('修改失败！');
-					}
-				}
-			})
-			return false;
-		});
-
-	});
-}
-
-function documentFilingInfo() {
-	onLoadPage("report_id");
-	layui.use([ 'form' ], function() {
-		var form = layui.form;
-		// 表单初始赋值
-		form.val('example', {
-			'id' : formData.data[0].id,
-			'name' : formData.data[0].name,		// "name": "value"
-			'status' : formData.data[0].status,		
-			'report_id' : formData.data[0].report_id,
-			'phone' : formData.data[0].phone,
-			'archivet_time' : timeStamp2String(formData.data[0].archivet_time),
-			'cencal_time' : isNaN(formData.data[0].cencal_time)?'无':timeStamp2String(formData.data[0].cencal_time),
-			'archivet_location' : formData.data[0].archivet_location
-		});
-
-		// 修改档案提交事件监听
-		form.on('submit(update1)', function(data) {
-			console.log(data);
-			$.ajax({
-				url : '/RecordManageSave/updateRecordById.action',
-				type : 'post',
-				dataType : 'json',
-				data : {
-					id : data.field.id,
-					status : data.field.status,
-					archivet_location : data.field.archivet_location
-				},
 				success : function(data) {
 					console.log(data);
 					if (data.code == 1) {
@@ -221,20 +201,77 @@ function documentFilingInfo() {
 							,
 							closeBtn : 0
 						}, function() {
-							window.location.href = "documentFiling.jsp"
+							window.location.href = "documentBorrowing.jsp"
 						});
 
+					} else if (data.code == 0) {
+						layer.msg('无效的操作');
 					} else {
-						console.log('修改失败！');
+						layer.msg(data.msg);
 					}
 
 				}
 			});
 			return false;
-
 		});
 
-	})
+		// 第一个实例
+		table.render({
+			elem : '#realEstateMortgageInfo',
+			url : '/RecordManageBorrow/findRecordBorrow.action',
+			page : {
+				theme : '#405467'
+			},
+			where : {
+				report_id : getHrefParam("report_id")
+			},
+			even : true,
+			skin : 'line', // 行边框风格
+			response : {
+				statusCode : 1
+			// 规定成功的状态码，默认：0
+			},
+			cols : [ [ // 表头
+			{
+				field : 'create_name',
+				title : '操作人'
+			}, {
+				field : 'status',
+				title : '操作类型',
+				templet : function(d) {
+					if (d.status == 0) {
+						return "<span class='pass'>归还</span>";
+					} else if (d.status == 1) {
+						return "<span class='failed'>借出</span>";
+					} else if (d.status == 2) {
+						return "<span class='unpass'>消档</span>";
+					}
+				}
+			}, {
+				field : 'read_name',
+				title : '借阅人'
+			}, {
+				field : 'read_time',
+				title : '借阅时间',
+				templet : function(d) {
+					if (isNaN(d.read_time)) {
+						return d.read_time = "无";
+					}
+					return timeStamp2String(d.read_time);
+				}
+			}, {
+				field : 'return_time',
+				title : '归还时间',
+				templet : function(d) {
+					if (isNaN(d.return_time)) {
+						return d.return_time = "无";
+					}
+					return timeStamp2String(d.return_time);
+				}
+			}, ] ]
+		});
+
+	});
 }
 //格式化Date日期时间数据(yyyy-MM-dd hh:mm:ss)
 function timeStamp2String(time) {
