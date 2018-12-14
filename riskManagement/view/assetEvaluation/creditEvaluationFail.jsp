@@ -5,7 +5,7 @@ q<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="U
 
 <div style="padding: 15px;">
 	<div class="breadcrumb">
-		<img src="/riskManagement/images/accessControl.png">
+		<img src="/riskManagement/images/assetEvaluationInfo.png">
 		<div class="word">
 			<span class="primary">资产评估</span> <span class="triangle"></span> <span class="secondary">信用贷款</span>
 		</div>

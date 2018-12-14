@@ -1,13 +1,12 @@
 // 激活二级导航
 $(document).ready(function() {
-	$($('#printingContract dd')[3]).addClass('layui-this');
-	$($('.layui-side .layui-nav-item')[4]).addClass('layui-nav-itemed');
+	navActive(4);
+	secondNavActive('#printingContract dd', 3)
 });
 
 function uploadContract() {
 	layui.use([ 'form', 'table' ], function() {
 		var form = layui.form, table = layui.table;
-
 		// 第一个实例
 		table.render({
 			elem : '#realEstateMortgage',
@@ -18,15 +17,6 @@ function uploadContract() {
 			id : 'testReload',
 			even : true,
 			skin : 'line', // 行边框风格
-			parseData : function(res) { // res 即为原始返回的数据
-				return {
-					"code" : res.code, // 解析接口状态
-					"msg" : res.msg, // 解析提示文本
-					"count" : res.count, // 解析数据长度
-					"data" : res.data
-				// 解析数据列表
-				};
-			},
 			response : {
 				statusCode : 1
 			// 规定成功的状态码，默认：0
@@ -123,37 +113,26 @@ function onLoadPage(name) {
 		async : false,
 		success : function(result) {
 			console.log(result);
-			formData = result;
+			formData = result.data;
 		}
 	});
 	console.log(formData);
 }
-// 获取地址栏参数，name:参数名称
-function getHrefParam(key) {
-	var s = window.location.href;
-	var reg = new RegExp(key + "=\\w+");
-	var rs = reg.exec(s);
-	if (rs === null || rs === undefined) {
-		return "";
-	} else {
-		return rs[0].split("=")[1];
-	}
-}
+
 function uploadContractInfo() {
 	onLoadPage("report_id");
 	console.log(formData);
 	layui.use([ 'form', 'upload' ], function() {
 		var form = layui.form, upload = layui.upload;
-		var lastIndex = formData.data.length;
 		// 表单初始赋值
 		form.val('example', {
-			"report_id" : formData.data[0].report_id, // "name": "value"
-			'id' : formData.data[0].id,
-			'user_id' : formData.data[0].user_id,
-			'contract_id' : formData.data[0].contract_id,
-			'create_time' : timeStamp2String(formData.data[0].create_time),
-			'update_time' : timeStamp2String(formData.data[lastIndex-1].update_time),
-			'remark' : formData.data[0].remark
+			"report_id" : formData[0].report_id, // "name": "value"
+			'id' : formData[0].id,
+			'user_id' : formData[0].user_id,
+			'contract_id' : formData[0].contract_id,
+			'create_time' : timeStamp2String(formData[0].create_time),
+			'update_time' : timeStamp2String(formData[formData.length-1].update_time),
+			'remark' : formData[0].remark
 		})
 
 
@@ -220,16 +199,4 @@ function uploadContractInfo() {
 
 	});
 
-}
-//格式化Date日期时间数据(yyyy-MM-dd hh:mm:ss)
-function timeStamp2String(time) {
-	var datetime = new Date();
-	datetime.setTime(time);
-	var year = datetime.getFullYear();
-	var month = datetime.getMonth() + 1 < 10 ? "0" + (datetime.getMonth() + 1) : datetime.getMonth() + 1;
-	var date = datetime.getDate() < 10 ? "0" + datetime.getDate() : datetime.getDate();
-	var hour = datetime.getHours() < 10 ? "0" + datetime.getHours() : datetime.getHours();
-	var minute = datetime.getMinutes() < 10 ? "0" + datetime.getMinutes() : datetime.getMinutes();
-	var second = datetime.getSeconds() < 10 ? "0" + datetime.getSeconds() : datetime.getSeconds();
-	return year + "-" + month + "-" + date;
 }

@@ -4,7 +4,7 @@
 <%@ include file="/riskManagement/templates/headerMenu.jsp"%>
 <div style="padding: 15px;">
 	<div class="breadcrumb">
-		<img src="/riskManagement/images/accessControl.png">
+		<img src="/riskManagement/images/documentMangementInfo.png">
 		<div class="word">
 			<span class="primary">档案管理</span> <span class="triangle"></span> <span class="secondary">档案借阅</span>
 		</div>
@@ -57,7 +57,7 @@
 	</form>
 
 	<div class="breadcrumb margin-top-50">
-		<img src="/riskManagement/images/accessControl.png">
+		<img src="/riskManagement/images/documentMangementInfo.png">
 		<div class="word">
 			<span class="primary">档案管理</span> <span class="triangle"></span> <span class="secondary">档案日志</span>
 		</div>

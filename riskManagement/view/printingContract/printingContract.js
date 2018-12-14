@@ -1,16 +1,15 @@
 //激活垂直导航栏
 $(document).ready(function() {
-	$($('.layui-side .layui-nav-item')[4]).addClass('layui-nav-itemed');
+	navActive(4);
+	
 	//打印合同的二级导航激活
     var printingContractHistory = document.referrer;
-    console.log(printingContractHistory);
-
     if (printingContractHistory.match('car')) {
-        $($('#printingContract dd')[1]).addClass('layui-this');
+    	secondNavActive('#printingContract dd', 1)
     } else if (printingContractHistory.match('credit')) {
-        $($('#printingContract dd')[2]).addClass('layui-this');
+    	secondNavActive('#printingContract dd', 2)
     } else if (printingContractHistory.match('housing')) {
-        $($('#printingContract dd')[0]).addClass('layui-this');
+    	secondNavActive('#printingContract dd', 0)
     }
 });
 

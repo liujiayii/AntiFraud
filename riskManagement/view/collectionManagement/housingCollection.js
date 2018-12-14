@@ -1,10 +1,7 @@
 //激活垂直导航栏
 $(document).ready(function() {
-	$($('#collectionManagement dd')[0]).addClass('layui-this');
-	$($('.layui-side .layui-nav-item')[8]).addClass('layui-nav-itemed');
-	$('button').click(function() {
-		console.log('a');
-	})
+	navActive(8);
+	secondNavActive('#collectionManagement dd', 0)
 });
 
 function housingCollection() {
@@ -54,9 +51,6 @@ function housingCollection() {
 
 		var active = {
 			reload : function() {
-				var demoReload = $('#demoReload');
-				console.log('重载');
-				console.log(demoReload.val())
 				// 执行重载
 				table.reload('testReload', {
 					url : '/LiquidateManage/findHousePropertyByPhone.action',
@@ -65,7 +59,7 @@ function housingCollection() {
 					// 重新从第 1 页开始
 					},
 					where : {
-						phone : demoReload.val()
+						phone : $('#demoReload').val()
 					},
 					done : function() {
 						console.log('完成')
@@ -99,20 +93,7 @@ function housingCollectionInfo() {
 
 		// 表单初始赋值
 
-		form.val('example', {
-
-			'entry_number' : formData.data.entry_number,
-			'name' : formData.data.name,
-			'phone' : formData.data.phone,
-			'approval_limit' : formData.data.approval_limit,
-			'affirm_time' : timeStamp2String(formData.data.affirm_time),
-			'life_of_loan' : timeStamp2String(formData.data.life_of_loan),
-			'emergency_phone' : formData.data.emergency_phone,
-			'home_address' : formData.data.home_address,
-			'remark' : formData.data.remark,
-			'relative_contact_number' : formData.data.relative_contact_number
-
-		})
+		form.val('example', getCollectionFormData())
 
 	});
 }
@@ -132,31 +113,9 @@ function onLoadPage(name) {
 		async : false,
 		success : function(result) {
 			console.log(result);
-			formData = result;
+			formData = result.data;
 		}
 	});
 	console.log(formData);
 }
-// 获取地址栏参数，name:参数名称
-function getHrefParam(key) {
-	var s = window.location.href;
-	var reg = new RegExp(key + "=\\w+");
-	var rs = reg.exec(s);
-	if (rs === null || rs === undefined) {
-		return "";
-	} else {
-		return rs[0].split("=")[1];
-	}
-}
-//格式化Date日期时间数据(yyyy-MM-dd hh:mm:ss)
-function timeStamp2String(time) {
-	var datetime = new Date();
-	datetime.setTime(time);
-	var year = datetime.getFullYear();
-	var month = datetime.getMonth() + 1 < 10 ? "0" + (datetime.getMonth() + 1) : datetime.getMonth() + 1;
-	var date = datetime.getDate() < 10 ? "0" + datetime.getDate() : datetime.getDate();
-	var hour = datetime.getHours() < 10 ? "0" + datetime.getHours() : datetime.getHours();
-	var minute = datetime.getMinutes() < 10 ? "0" + datetime.getMinutes() : datetime.getMinutes();
-	var second = datetime.getSeconds() < 10 ? "0" + datetime.getSeconds() : datetime.getSeconds();
-	return year + "-" + month + "-" + date;
-}
+

@@ -4,7 +4,7 @@
 <%@ include file="/riskManagement/templates/headerMenu.jsp"%>
 <div style="padding: 15px;" class="">
 	<div class="breadcrumb">
-		<img src="/riskManagement/images/blueBag.png">
+		<img src="/riskManagement/images/assetEvaluationInfo.png">
 		<div class="word">
 			<span class="primary">资产评估</span> <span class="triangle"></span> <span class="secondary">车辆抵押</span>
 		</div>
@@ -252,9 +252,6 @@
 			<legend>图片信息</legend>
 		</fieldset>
 		<div class="imgList layui-clear layer-photos-demo" id="layer-photos-demo"></div>
-	</form>
-	<form class="form-main layui-form form-main-4" lay-filter="sub">
-		<input type="hidden" name="id"><input type="hidden" name="status"><input type="hidden" name="entry_number">
 		<div class="layui-form-item btn-item margin-top-50">
 			<div class="layui-input-block page-but margin-left-150">
 				<button type="button" class="layui-btn confirm-but layui-btn-normal" lay-submit lay-filter="suc">通过</button>

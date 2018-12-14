@@ -1,7 +1,7 @@
 // 激活二级导航
 $(document).ready(function() {
-	$($('.layui-side .layui-nav-item')[7]).addClass('layui-nav-itemed');
-	$($('#managementAfterLoan dd')[0]).addClass('layui-this');
+	navActive(7);
+	secondNavActive('#managementAfterLoan dd', 0)
 });
 
 function managementAfterLoan() {
@@ -16,22 +16,8 @@ function managementAfterLoan() {
 			page : {
 				theme : '#405467'
 			},
-
-			request : {
-				pageName : 'page',
-				limitName : 'limit'
-			},
 			even : true,
 			skin : 'line', // 行边框风格
-			parseData : function(res) { // res 即为原始返回的数据
-				return {
-					"code" : res.code, // 解析接口状态
-					"msg" : res.msg, // 解析提示文本
-					"count" : res.count, // 解析数据长度
-					"data" : res.data
-				// 解析数据列表
-				};
-			},
 			response : {
 				statusCode : 1
 			// 规定成功的状态码，默认：0
@@ -106,16 +92,4 @@ function managementAfterLoan() {
 		});*/
 	})
 
-}
-//格式化Date日期时间数据(yyyy-MM-dd hh:mm:ss)
-function timeStamp2String(time) {
-	var datetime = new Date();
-	datetime.setTime(time);
-	var year = datetime.getFullYear();
-	var month = datetime.getMonth() + 1 < 10 ? "0" + (datetime.getMonth() + 1) : datetime.getMonth() + 1;
-	var date = datetime.getDate() < 10 ? "0" + datetime.getDate() : datetime.getDate();
-	var hour = datetime.getHours() < 10 ? "0" + datetime.getHours() : datetime.getHours();
-	var minute = datetime.getMinutes() < 10 ? "0" + datetime.getMinutes() : datetime.getMinutes();
-	var second = datetime.getSeconds() < 10 ? "0" + datetime.getSeconds() : datetime.getSeconds();
-	return year + "-" + month + "-" + date + " " + hour + ":" + minute + ":" + second;
 }

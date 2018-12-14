@@ -4,7 +4,7 @@
 <%@ include file="/riskManagement/templates/headerMenu.jsp"%>
 <div style="padding: 15px;">
 	<div class="breadcrumb">
-		<img src="/riskManagement/images/blueBag.png">
+		<img src="/riskManagement/images/businessReportInfo.png">
 		<div class="word">
 			<span class="primary">业务报单</span> <span class="triangle"></span> <span class="secondary">信用贷款</span>
 		</div>

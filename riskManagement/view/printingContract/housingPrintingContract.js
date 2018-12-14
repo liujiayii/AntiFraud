@@ -1,7 +1,7 @@
 // 激活导航
 $(document).ready(function() {
-	$($('#printingContract dd')[0]).addClass('layui-this');
-	$($('.layui-side .layui-nav-item')[4]).addClass('layui-nav-itemed');
+	navActive(4);
+	secondNavActive('#printingContract dd', 0)
 });
 layui.use([  'table' ], function() {
 	var table = layui.table;
@@ -16,15 +16,6 @@ layui.use([  'table' ], function() {
 		id : 'testReload',
 		even : true,
 		skin : 'line', // 行边框风格
-		parseData : function(res) { // res 即为原始返回的数据
-			return {
-				"code" : res.code, // 解析接口状态
-				"msg" : res.msg, // 解析提示文本
-				"count" : res.count, // 解析数据长度
-				"data" : res.data
-			// 解析数据列表
-			};
-		},
 		response : {
 			statusCode : 1
 		// 规定成功的状态码，默认：0
@@ -54,9 +45,6 @@ layui.use([  'table' ], function() {
 
 	var active = {
 		reload : function() {
-			var demoReload = $('#demoReload');
-			console.log('重载');
-			console.log(demoReload.val())
 			// 执行重载
 			table.reload('testReload', {
 				url : '/HousePropertyMortgage/listAllAndPhone.action',
@@ -65,7 +53,7 @@ layui.use([  'table' ], function() {
 				// 重新从第 1 页开始
 				},
 				where : {
-					phone : demoReload.val()
+					phone : $('#demoReload').val()
 				},
 				done : function() {
 					console.log('完成')

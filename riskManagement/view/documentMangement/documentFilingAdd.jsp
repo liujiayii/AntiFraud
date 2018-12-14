@@ -5,7 +5,7 @@
 
 <div style="padding: 15px;">
 	<div class="breadcrumb">
-		<img src="/riskManagement/images/accessControl.png">
+		<img src="/riskManagement/images/documentMangementInfo.png">
 		<div class="word">
 			<span class="primary">档案管理</span> <span class="triangle"></span> <span class="secondary">档案添加</span>
 		</div>

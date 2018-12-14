@@ -1,7 +1,7 @@
 //激活二级导航
 $(document).ready(function() {
-	$($('#documentMangement dd')[2]).addClass('layui-this');
-	$($('.layui-side .layui-nav-item')[5]).addClass('layui-nav-itemed');
+	navActive(5);
+	secondNavActive('#documentMangement dd', 2)
 });
 
 
@@ -22,15 +22,6 @@ function documentBorrowing() {
 			response : {
 				statusCode : 1
 			// 规定成功的状态码，默认：0
-			},
-			parseData : function(res) { // res 即为原始返回的数据
-				return {
-					"code" : res.code, // 解析接口状态
-					"msg" : res.msg, // 解析提示文本
-					"count" : res.count, // 解析数据长度
-					"data" : res.data
-				// 解析数据列表
-				};
 			},
 			cols : [ [ // 表头
 			{
@@ -88,7 +79,6 @@ function documentBorrowing() {
 		// 通过报单编号搜索
 		var active = {
 			reload : function() {
-				var demoReload = $('#demoReload');
 				// 执行重载
 				table.reload('testReload', {
 					url : '/RecordManageSave/findRecordByRecordId.action',
@@ -97,7 +87,7 @@ function documentBorrowing() {
 					// 重新从第 1 页开始
 					},
 					where : {
-						report_id : demoReload.val()
+						report_id : $('#demoReload').val()
 					}
 				});
 			}
@@ -126,7 +116,6 @@ function onLoadPage(name) {
 	console.log('aaa');
 	var report_id = getHrefParam(name);
 	$.ajax({    
-		//url : '/RecordManageBorrow/getRecordLastByReportId.action',
 		url : '/RecordManageSave/findRecordByRecordId.action',
 		type : 'post',
 		dataType : 'json',
@@ -136,22 +125,12 @@ function onLoadPage(name) {
 		async : false,
 		success : function(result) {
 			console.log(result);
-			formData = result;
+			formData = result.data;
 		}
 	});
-	//console.log(formData);
+	console.log(formData);
 }
-// 获取地址栏参数，name:参数名称
-function getHrefParam(key) {
-	var s = window.location.href;
-	var reg = new RegExp(key + "=\\w+");
-	var rs = reg.exec(s);
-	if (rs === null || rs === undefined) {
-		return "";
-	} else {
-		return rs[0].split("=")[1];
-	}
-}
+
 
 function documentBorrowingInfo() {
 	onLoadPage("report_id");
@@ -162,28 +141,18 @@ function documentBorrowingInfo() {
 		// 表单初始赋值
 
 		form.val('example', {
-			"report_id" : formData.data[0].report_id, // "name": "value"
-			'status' : formData.data[0].status,
-			'read_time' : formData.data.read_time,
-			'read_name' : formData.data[0].read_name,
-			'return_time' : formData.data.return_time,
-			'archivet_location' : formData.data.archivet_location,
-			'create_name' : formData.data.create_name
+			"report_id" : formData[0].report_id, // "name": "value"
+			'status' : formData[0].status,
+			'read_time' : formData.read_time,
+			'read_name' : formData[0].read_name,
+			'return_time' : formData[0].return_time,
+			'archivet_location' : formData[0].archivet_location,
+			'create_name' : formData[0].create_name
 		})
 		// 监听提交
 		form.on('submit(borrowInfoBtn)', function(data) {
-			// layer.msg(JSON.stringify(data.field));
-			/*if (data.field.status == 0) {
-				layer.msg('如需返回，请点取消');
-				return;
-			}
-			if (data.field.status == 1) {
-				layer.msg('当前档案处于消档状态，不能执行修改操作！');
-				return;
-			}*/
 			if (data.field.status == 2) {
-				layer.msg('当前档案处于消档状态，不能执行修改操作！');
-				return;
+				layerNOPath()
 			}
 			
 			$.ajax({
@@ -195,19 +164,11 @@ function documentBorrowingInfo() {
 					console.log(data);
 					if (data.code == 1) {
 						// 墨绿深蓝风
-
-						layer.alert('修改成功', {
-							skin : 'layui-layer-molv' // 样式类名
-							,
-							closeBtn : 0
-						}, function() {
-							window.location.href = "documentBorrowing.jsp"
-						});
-
+						layerMsgPath('修改成功', 'documentBorrowing.jsp', '')
 					} else if (data.code == 0) {
-						layer.msg('无效的操作');
+						layerClose('无效的操作')
 					} else {
-						layer.msg(data.msg);
+						layerClose(data.msg)
 					}
 
 				}
@@ -272,16 +233,4 @@ function documentBorrowingInfo() {
 		});
 
 	});
-}
-//格式化Date日期时间数据(yyyy-MM-dd hh:mm:ss)
-function timeStamp2String(time) {
-	var datetime = new Date();
-	datetime.setTime(time);
-	var year = datetime.getFullYear();
-	var month = datetime.getMonth() + 1 < 10 ? "0" + (datetime.getMonth() + 1) : datetime.getMonth() + 1;
-	var date = datetime.getDate() < 10 ? "0" + datetime.getDate() : datetime.getDate();
-	var hour = datetime.getHours() < 10 ? "0" + datetime.getHours() : datetime.getHours();
-	var minute = datetime.getMinutes() < 10 ? "0" + datetime.getMinutes() : datetime.getMinutes();
-	var second = datetime.getSeconds() < 10 ? "0" + datetime.getSeconds() : datetime.getSeconds();
-	return year + "-" + month + "-" + date + " " + hour + ":" + minute + ":" + second;
 }

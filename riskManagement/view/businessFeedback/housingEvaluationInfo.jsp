@@ -2,11 +2,9 @@
 <title>业务反馈</title>
 
 <%@ include file="/riskManagement/templates/headerMenu.jsp"%>
-
-
 <div style="padding: 15px;" class="">
 	<div class="breadcrumb">
-		<img src="/riskManagement/images/blueBag.png">
+		<img src="/riskManagement/images/businessFeedbackInfo.png">
 		<div class="word">
 			<span class="primary">业务反馈</span> <span class="triangle"></span> <span class="secondary">房屋评估</span>
 		</div>

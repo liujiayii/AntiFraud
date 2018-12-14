@@ -1,7 +1,7 @@
 // 激活二级导航
 $(document).ready(function() {
-	$($('#supplementaryFormalities dd')[0]).addClass('layui-this');
-	$($('.layui-side .layui-nav-item')[3]).addClass('layui-nav-itemed');
+	navActive(3);
+	secondNavActive('#supplementaryFormalities dd', 0)
 });
 
 function housingFormalities() {
@@ -17,15 +17,6 @@ function housingFormalities() {
 			},
 			even : true,
 			skin : 'line', // 行边框风格
-			parseData : function(res) { // res 即为原始返回的数据
-				return {
-					"code" : res.code, // 解析接口状态
-					"msg" : res.msg, // 解析提示文本
-					"count" : res.count, // 解析数据长度
-					"data" : res.data
-				// 解析数据列表
-				};
-			},
 			id : 'testReload',
 			response : {
 				statusCode : 1
@@ -70,9 +61,6 @@ function housingFormalities() {
 
 		var active = {
 			reload : function() {
-				var demoReload = $('#demoReload');
-				console.log('重载');
-				console.log(demoReload.val())
 				// 执行重载
 				table.reload('testReload', {
 					url : '/ReplenishProcedureImage/findHousePropertyByPhone.action',
@@ -81,7 +69,7 @@ function housingFormalities() {
 					// 重新从第 1 页开始
 					},
 					where : {
-						phone : demoReload.val()
+						phone : $('#demoReload').val()
 					},
 					done : function() {
 						console.log('完成')
@@ -114,99 +102,8 @@ function housingFormalitiesInfo() {
 		var form = layui.form, upload = layui.upload, laydate = layui.laydate;
 
 		// 表单初始赋值
-
-		form.val('example', {
-			'id' : formData.data.id,
-			'name' : formData.data.name,
-			'home_number' : formData.data.home_number,
-			'age' : formData.data.age,
-			'entry_number' : formData.data.entry_number,
-			'id_number' : formData.data.id_number,
-			'gender' : formData.data.gender,
-			'marital_status' : formData.data.marital_status,
-			'education' : formData.data.education,
-			'diploma' : formData.data.diploma,
-			'phone' : formData.data.phone,
-			'home_phone' : formData.data.home_phone,
-			'business_phone_number' : formData.data.business_phone_number,
-			'home_address' : formData.data.home_address,
-			'mailing_address' : formData.data.mailing_address,
-			'permanent_residence_address' : formData.data.permanent_residence_address,
-			'email' : formData.data.email,
-			'spouse_identification_name' : formData.data.spouse_identification_name,
-			'spouse_identification_number' : formData.data.spouse_identification_number,
-			'spousal_work_unit' : formData.data.spousal_work_unit,
-			'spouse_telephone' : formData.data.spouse_telephone,
-			'relative_contact_name' : formData.data.relative_contact_name,
-			'domestic_relation' : formData.data.domestic_relation,
-			'relative_contact_number' : formData.data.relative_contact_number,
-			'emergency_name' : formData.data.emergency_name,
-			'emergency_relation' : formData.data.emergency_relation,
-			'emergency_phone' : formData.data.emergency_phone,
-			'apply_for_limit' : formData.data.apply_for_limit,
-			'apply_for_deadline' : formData.data.apply_for_deadline,
-			'account_opening_time' : formData.data.account_opening_time
-		})
-		form.val('subForm', {
-			'id' : formData.data.id,
-			'entry_number' : formData.data.entry_number,
-			'occupational' : formDataSub.data.occupational,
-			'company_name' : formDataSub.data.company_name,
-			'industry_of_the_company' : formDataSub.data.industry_of_the_company,
-			'company_address' : formDataSub.data.company_address,
-			'company_mail' : formDataSub.data.company_mail,
-			'starting_work' : formDataSub.data.starting_work,
-			'duty' : formDataSub.data.duty,
-			'company_mail' : formDataSub.data.company_mail,
-			'throw_industry' : formDataSub.data.throw_industry,
-			'bor_type' : formDataSub.data.bor_type,
-			'site' : formDataSub.data.site,
-			'annual_income' : formDataSub.data.annual_income,
-			'service_rate' : formDataSub.data.service_rate,
-			'residential_condition' : formDataSub.data.residential_condition,
-			'period_of_resident' : formDataSub.data.period_of_resident,
-			'facetime' : timeStamp2String(formDataSub.data.facetime),
-			'talk_place' : formDataSub.data.talk_place,
-			'purpose_of_loan' : formDataSub.data.purpose_of_loan,
-			'approval_limit' : formDataSub.data.approval_limit,
-			'approval_deadline' : formDataSub.data.approval_deadline,
-			'business_type' : formData.data.business_type,
-			'borrowing_species' : formDataSub.data.borrowing_species,
-			'reward' : formDataSub.data.reward,
-			'money_collecting_time' : formDataSub.data.money_collecting_time,
-			'ource_of_revenue' : formDataSub.data.ource_of_revenue,
-			'repayment' : formDataSub.data.repayment,
-			'housing_situation' : formDataSub.data.housing_situation,
-			'car_situation' : formDataSub.data.car_situation,
-			'other_assets' : formDataSub.data.other_assets,
-			'guaranty_style' : formDataSub.data.guaranty_style,
-			'credit' : formDataSub.data.credit,
-			'name_of_sponsor' : formDataSub.data.name_of_sponsor,
-			'margin_trade' : formDataSub.data.margin_trade,
-			'pledge_type' : formDataSub.data.pledge_type,
-			'belong_to_oneself_for_webpage' : formDataSub.data.belong_to_oneself_for_webpage,
-			'assess_price' : formDataSub.data.assess_price,
-			'life_of_loan' : formDataSub.data.life_of_loan,
-			'annual_interest_rate' : formDataSub.data.annual_interest_rate,
-			'whether_the_loan_for_webpage' : formDataSub.data.whether_the_loan_for_webpage,
-			'observant_party' : formDataSub.data.observant_party,
-			'branch_office' : formDataSub.data.branch_office,
-			'reception_personnel' : formDataSub.data.reception_personnel,
-			'nowaddress' : formDataSub.data.nowaddress,
-			'line_of_credit' : formDataSub.data.line_of_credit,
-			'liabilities_of_bank' : formDataSub.data.liabilities_of_bank,
-			'liabilities_of_folk' : formDataSub.data.liabilities_of_folk,
-			'loan_documentation' : formDataSub.data.loan_documentation,
-			'home_address' : formDataSub.data.home_address,
-			'monthly_profit' : formDataSub.data.monthly_profit,
-			'spouse_monthly_profit' : formDataSub.data.spouse_monthly_profit,
-			'borrowing_that' : formDataSub.data.borrowing_that,
-			'survey_and_opinion' : formDataSub.data.survey_and_opinion,
-			'risk_control_opinion' : formDataSub.data.risk_control_opinion,
-			'home_annual_income' : formDataSub.data.home_annual_income,
-			'payment_type' : formDataSub.data.payment_type,
-			'professional_title' : formDataSub.data.professional_title
-		})
+		form.val('example', getFormData())
+		form.val('subForm', getSubFormData())
 
 		// 执行一个laydate实例
 		laydate.render({
@@ -228,23 +125,10 @@ function housingFormalitiesInfo() {
 				success : function(result) {
 					console.log(result);
 					// 墨绿深蓝风
-
-					layer.alert('修改成功', {
-						skin : 'layui-layer-molv' // 样式类名
-						,
-						closeBtn : 0
-					}, function() {
-						window.location.href = "housingFormalities.jsp"
-					});
+					layerMsgPath('修改成功', 'housingFormalities.jsp', '');
 				}
 			});
 			return false; // 阻止表单跳转。如果需要表单跳转，去掉这段即可。
-		});
-		// 表单验证
-		form.verify({
-			wordlimit : [ /^.{20,2000}$/, '请输入20到2000位汉字' ],
-			address : [ /^[0-9][0-9]{5}$/, '请输入正确的邮编' ],
-			rate : [ /^([1-9]|1[0-9]|20)([.]([0-9]){1,2})?$/, '1%~20%' ]
 		});
 		// 多文件列表示例
 		var demoListView = $('#demoList'), uploadListIns = upload.render({
@@ -323,15 +207,13 @@ function onLoadPage(name) {
 		async : false,
 		success : function(result) {
 			console.log(result);
-			formData = result;
-			var entry_number = formData.data.entry_number;
-			console.log(entry_number);
+			formData = result.data;
 			$.ajax({
 				url : '/ReplenishProcedureImage/findReplenishProcedureByEntry_number.action',
 				type : 'post',
 				dataType : 'json',
 				data : {
-					id : entry_number
+					id : formData.entry_number
 				},
 				async : false,
 				success : function(result) {
@@ -343,29 +225,4 @@ function onLoadPage(name) {
 		}
 	});
 	console.log(formDataSub);
-}
-
-console.log(formDataSub);
-// 获取地址栏参数，name:参数名称
-function getHrefParam(key) {
-	var s = window.location.href;
-	var reg = new RegExp(key + "=\\w+");
-	var rs = reg.exec(s);
-	if (rs === null || rs === undefined) {
-		return "";
-	} else {
-		return rs[0].split("=")[1];
-	}
-}
-//格式化Date日期时间数据(yyyy-MM-dd hh:mm:ss)
-function timeStamp2String(time) {
-	var datetime = new Date();
-	datetime.setTime(time);
-	var year = datetime.getFullYear();
-	var month = datetime.getMonth() + 1 < 10 ? "0" + (datetime.getMonth() + 1) : datetime.getMonth() + 1;
-	var date = datetime.getDate() < 10 ? "0" + datetime.getDate() : datetime.getDate();
-	var hour = datetime.getHours() < 10 ? "0" + datetime.getHours() : datetime.getHours();
-	var minute = datetime.getMinutes() < 10 ? "0" + datetime.getMinutes() : datetime.getMinutes();
-	var second = datetime.getSeconds() < 10 ? "0" + datetime.getSeconds() : datetime.getSeconds();
-	return year + "-" + month + "-" + date;
 }
