@@ -1,6 +1,6 @@
 // 激活导航
 $(document).ready(function() {
-	navActive(4);
+	navActive(5);
 	secondNavActive('#printingContract dd', 1)
 });
 

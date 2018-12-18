@@ -20,15 +20,19 @@
 
 <body onload="load()">
 	<div class="login-main">
-		<form class="layui-form login-form" lay-filter="login-form" name="frmlogin" onsubmit="return false;">
+		<form class="layui-form login-form" lay-filter="login-form" name="frmlogin" action="/loginUser.action" method="post">
 			<header class="login-elip">WELCOME</header>
-			<input type="hidden" name="username" id="UserName"> <input type="hidden" name="KeyID" id="KeyID">
+			<input type="hidden" name="username" id="UserName"> 
 			<div class="layui-input-inline login-input-inline">
-				<i class="layui-icon layui-icon-password"></i><input type="password" name="password" id="Password" placeholder="请输入密码" maxlength="16" autocomplete="new-password" class="layui-input login-input" lay-verType="tips">
+				<i class="layui-icon layui-icon-password"></i>
+				<input type="password" name="password" id="Password" placeholder="请输入密码" maxlength="16" autocomplete="new-password" class="layui-input login-input" lay-verType="tips">
 			</div>
 			<div class="layui-input-inline login-input-inline">
 				<input type="button" class="login-button layui-bg-blue" value="登录" id="loginBtn" lay-submit lay-filter="sub" >
 			</div>
+			<input type="hidden" name="KeyID" id="KeyID" value="">
+			<input type="hidden" name="rnd" id="rnd" value="${rnd}">
+			<input type="hidden" name="return_EncData" id="return_EncData" value="">
 		</form>
 	</div>
 </body>

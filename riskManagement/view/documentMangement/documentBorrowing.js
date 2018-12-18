@@ -1,6 +1,6 @@
 //激活二级导航
 $(document).ready(function() {
-	navActive(5);
+	navActive(6);
 	secondNavActive('#documentMangement dd', 2)
 });
 
@@ -152,7 +152,9 @@ function documentBorrowingInfo() {
 		// 监听提交
 		form.on('submit(borrowInfoBtn)', function(data) {
 			if (data.field.status == 2) {
-				layerNOPath()
+				//layerNOPath();
+				layerClose("消档请移步档案归档");
+				return;
 			}
 			
 			$.ajax({
@@ -166,7 +168,7 @@ function documentBorrowingInfo() {
 						// 墨绿深蓝风
 						layerMsgPath('修改成功', 'documentBorrowing.jsp', '')
 					} else if (data.code == 0) {
-						layerClose('无效的操作')
+						layerClose(data.msg)
 					} else {
 						layerClose(data.msg)
 					}

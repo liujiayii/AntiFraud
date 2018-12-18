@@ -221,49 +221,31 @@ function login_onclick() {
 			}
 				break;
 			case 10: {
-				if (UK_Data.LastError != 0) {
-					layer.msg("读取字符串时错误，错误码为：" + UK_Data.LastError.toString(), function() {
-					});
+				if( UK_Data.LastError!=0){
+					layer.msg("读取字符串时错误，错误码为："+UK_Data.LastError.toString());
 					s_simnew1.Socket_UK.close();
 					return false;
-				}
-				// frmlogin.Password.value =
-				// UK_Data.return_value;//获得返回的UK中地址21的字符串
+				} 
+                //frmlogin.Password.value=UK_Data.return_value;//获得返回的UK中地址21的字符串
+                
+                //frmlogin.DevicePath.value=DevicePath;
+                //这里返回对随机数的HASH结果
+                s_simnew1.EncString(frmlogin.rnd.value,DevicePath);//发送命令让UK进行加密操作
+			}
+				break;
+			case 11: {
+				if( UK_Data.LastError!=0){
+					layer.msg("进行加密运行算时错误，错误码为："+UK_Data.LastError.toString());
+					s_simnew1.Socket_UK.close();
+					return false;
+				} 
+                frmlogin.return_EncData.value=UK_Data.return_value;//获得返回的加密后的字符串
+                console.log("客户端加密串："+UK_Data.return_value);
+                 //!!!!!注意，这里一定要主动提交，
+                frmlogin.submit (); 
 
-				// !!!!!注意，这里一定要主动提交，
-				// frmlogin.submit();
-				if ($('#Password').val() === '') {
-					layer.msg("请输入密码", function() {
-						$('#Password').focus();
-					});
-				} else {
-					$.ajax({
-						url : '/loginUser.action',
-						type : 'post',
-						dataType : 'json',
-						data : {
-							username : $('#UserName').val(),
-							password : $('#Password').val()
-						},
-						success : function(result) {
-							console.log(result);
-							if (result.code == 1 && result.status == 1) {
-								window.location.href = "/riskManagement/view/index/index.jsp";
-							} else if (result.status == 2) {
-								$('#Password').val("");
-								layer.msg('账号已经锁定');
-
-							} else {
-								$('#Password').val("");
-								layer.msg('用户名或密码错误');
-
-							}
-						}
-					})
-				}
-
-				// 所有工作处理完成后，关掉Socket
-				s_simnew1.Socket_UK.close();
+                 //所有工作处理完成后，关掉Socket
+                 s_simnew1.Socket_UK.close();
 			}
 				break;
 			}

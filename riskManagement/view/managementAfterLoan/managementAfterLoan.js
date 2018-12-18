@@ -1,6 +1,6 @@
 // 激活二级导航
 $(document).ready(function() {
-	navActive(7);
+	navActive(8);
 	secondNavActive('#managementAfterLoan dd', 0)
 });
 
@@ -64,22 +64,18 @@ function managementAfterLoan() {
 			} ] ]
 		});
 
-		/*// 电话搜索
-
+		// 电话搜索
 		var active = {
 			reload : function() {
-				var demoReload = $('#demoReload');
-				console.log('重载');
-				console.log(demoReload.val())
 				// 执行重载
 				table.reload('testReload', {
-					url : '',
+					url : '/AcceptController/findByPhone.action',
 					page : {
 						curr : 1
 					// 重新从第 1 页开始
 					},
 					where : {
-						phone : demoReload.val()
+						phone : $('#demoReload').val()
 					}
 				});
 			}
@@ -89,7 +85,7 @@ function managementAfterLoan() {
 			var type = $(this).data('type');
 			console.log(type);
 			active[type] ? active[type].call(this) : '';
-		});*/
+		});
 	})
 
 }

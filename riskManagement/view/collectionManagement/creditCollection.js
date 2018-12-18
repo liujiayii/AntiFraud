@@ -1,6 +1,6 @@
 //激活垂直导航栏
 $(document).ready(function() {
-	navActive(8);
+	navActive(9);
 	secondNavActive('#collectionManagement dd', 2)
 });
 

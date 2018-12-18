@@ -1,6 +1,6 @@
 layui.use([ 'table', 'form', 'layer' ], function() {
 	var table = layui.table, form = layui.form, layer = layui.layer;
-	// 设定全局默认参数。options即各项基础参数
+	// 设定全局默认参数。options即各项基础参数（此配置目前有bug，是layui的bug）
 	table.set({
 		id : 'testReload',
 		page : {
@@ -258,3 +258,103 @@ function layerNOPath() {
 		});
 	})
 }
+//高德地图轨迹图API
+function autoNaviUtil(autoNaviUtilPath) {
+	//创建地图
+	var map = new AMap.Map('container', {
+		zoom : 4
+	});
+
+	AMapUI.load([ 'ui/misc/PathSimplifier', 'lib/$' ], function(PathSimplifier, $) {
+
+		if (!PathSimplifier.supportCanvas) {
+			alert('当前环境不支持 Canvas！');
+			return;
+		}
+
+		//just some colors
+		var colors = [ "#3366cc", "#dc3912", "#ff9900", "#109618", "#990099", "#0099c6", "#dd4477", "#66aa00", "#b82e2e", "#316395", "#994499", "#22aa99", "#aaaa11", "#6633cc",
+				"#e67300", "#8b0707", "#651067", "#329262", "#5574a6", "#3b3eac" ];
+
+		var pathSimplifierIns = new PathSimplifier({
+			zIndex : 100,
+			//autoSetFitView:false,
+			map : map, //所属的地图实例
+
+			getPath : function(pathData, pathIndex) {
+
+				return pathData.path;
+			},
+			getHoverTitle : function(pathData, pathIndex, pointIndex) {
+
+				if (pointIndex >= 0) {
+					//point 
+					return pathData.name + '，点：' + pointIndex + '/' + pathData.path.length;
+				}
+
+				return pathData.name + '，点数量' + pathData.path.length;
+			},
+			renderOptions : {
+				pathLineStyle : {
+					dirArrowStyle : true
+				},
+				getPathStyle : function(pathItem, zoom) {
+
+					var color = colors[pathItem.pathIndex % colors.length], lineWidth = Math.round(4 * Math.pow(1.1, zoom - 3));
+
+					return {
+						pathLineStyle : {
+							strokeStyle : color,
+							lineWidth : lineWidth
+						},
+						pathLineSelectedStyle : {
+							lineWidth : lineWidth + 2
+						},
+						pathNavigatorStyle : {
+							fillStyle : color
+						}
+					};
+				}
+			}
+		});
+
+		window.pathSimplifierIns = pathSimplifierIns;
+
+		$('<div id="loadingTip">加载数据，请稍候...</div>').appendTo(document.body);
+
+		$.getJSON(autoNaviUtilPath, function(d) {
+
+			$('#loadingTip').remove();
+
+			pathSimplifierIns.setData([{
+				name: d[0].name,
+				path: d[0].path
+			}]);
+
+			//initRoutesContainer(d);
+
+			function onload() {
+				pathSimplifierIns.renderLater();
+			}
+
+			function onerror(e) {
+				alert('图片加载失败！');
+			}
+
+			//创建一个巡航器
+			var navg1 = pathSimplifierIns.createPathNavigator(0, {
+				loop : true,
+				speed : 500000,
+				pathNavigatorStyle : {
+					width : 16,
+					height : 32,
+					content : PathSimplifier.Render.Canvas.getImageContent('../../images/car.png', onload, onerror),
+					strokeStyle : null,
+					fillStyle : null
+				}
+			});
+
+			navg1.start();
+		});
+	});
+}	

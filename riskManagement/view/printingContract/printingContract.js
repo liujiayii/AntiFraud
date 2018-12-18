@@ -1,6 +1,6 @@
 //激活垂直导航栏
 $(document).ready(function() {
-	navActive(4);
+	navActive(5);
 	
 	//打印合同的二级导航激活
     var printingContractHistory = document.referrer;

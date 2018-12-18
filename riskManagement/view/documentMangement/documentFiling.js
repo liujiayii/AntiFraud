@@ -1,6 +1,6 @@
 // 激活二级导航
 $(document).ready(function() {
-	navActive(5);
+	navActive(6);
 	secondNavActive('#documentMangement dd', 1)
 });
 

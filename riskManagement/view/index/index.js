@@ -7,7 +7,7 @@ $(document).ready(function() {
 	var moneyArr = [];
 	$.ajax({
 		url : '/HousePropertyMortgage/fiduciaryCount.action',
-		type : 'get',
+		type : 'post',
 		dataType : 'json',
 		async : false,
 		success : function(result) {
@@ -42,7 +42,6 @@ $(document).ready(function() {
 		url : '/HousePropertyMortgage/ordersTotal.action',
 		type : 'get',
 		dataType : 'json',
-		async : false,
 		success : function(result) {
 			console.log(result);
 			$('.all').text(result.count);
@@ -86,7 +85,6 @@ $(document).ready(function() {
 		url : '/HousePropertyMortgage/totalMoney.action',
 		type : 'get',
 		dataType : 'json',
-		async : false,
 		success : function(result) {
 			console.log(result);
 			$('.all_money').text(result.data);

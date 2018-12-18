@@ -1,6 +1,6 @@
 // 激活垂直导航栏
 $(document).ready(function() {
-	navActive(9);
+	navActive(10);
 	secondNavActive('#accessMangement dd', 0)
 });
 function accessMangement() {
