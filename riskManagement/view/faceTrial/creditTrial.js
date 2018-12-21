@@ -10,7 +10,7 @@ function creditTrial() {
 		// 第一个实例
 		table.render({
 			elem : '#realEstateMortgage',
-			url : '/HousePropertyMortgage/findAll.action',
+			url : '/ReplenishProcedureImage/findFiduciarysd.action',
 			page : {
 				theme : '#405467'
 			},
@@ -23,36 +23,27 @@ function creditTrial() {
 			skin : 'line', // 行边框风格
 
 			cols : [ [ // 表头
-			{
-				field : 'entry_number',
-				title : '报单编号'
-			}, {
-				field : 'name',
-				title : '姓名'
-			}, {
-				field : 'phone',
-				title : '电话'
-			},{
-				field : 'type',
-				title : '状态',
-				templet : function(d) {
-					if (d.type == '0') {
-						return "<span class='failed'>已保存</span>"
-					} else if (d.type == '1') {
-						return "<span class='pass'>已提交</span>"
-					} else if (d.type == '2') {
-						return "<span class='unpass'>未查看</span>"
-					}
-				}
-			},{
-				field : '',
-				title : '时间'
-			}, {
-				field : 'operation',
-				title : '操作',
-				toolbar : '#operation'
-			}, ] ]
-		});
+			           {
+							field : 'entry_number',
+							title : '报单编号'
+						}, {
+							field : 'name',
+							title : '姓名'
+						}, {
+							field : 'phone',
+							title : '电话'
+						},{
+							field : 'create_time',
+							title : '时间',
+							templet : function(d) {
+								return timeStamp2String(d.create_time)
+							}
+						}, {
+							field : 'operation',
+							title : '操作',
+							toolbar : '#operation'
+						}, ] ]
+					});
 
 		// 搜索
 
@@ -69,7 +60,6 @@ function creditTrial() {
 						phone : $('#demoReload').val()
 					},
 					done : function() {
-						console.log('完成')
 					}
 				});
 			}
@@ -77,16 +67,14 @@ function creditTrial() {
 
 		$('#demoReload').on('input', function() {
 			var type = $(this).data('type');
-			console.log(type);
 			active[type] ? active[type].call(this) : '';
 		});
 
 		// 监听行工具事件
 		table.on('tool(realEstateMortgage)', function(obj) {
 			var data = obj.data;
-			console.log(obj);
 			if (obj.event == 'see') {
-				window.location.href = "creditTrialList.jsp?id=" + data.id;
+				window.location.href = "creditTrialList.jsp?entry_number=" + data.entry_number;
 			}
 		});
 
@@ -95,13 +83,13 @@ function creditTrial() {
 }
 
 function creditTrialList() {
-	onLoadPage('id');
+	var entry_number = getHrefParam('entry_number');
 	layui.use([ 'table' ], function() {
 		var table = layui.table;
 		// 第一个实例
 		table.render({
 			elem : '#realEstateMortgage',
-			url : '/HousePropertyMortgage/findAll.action',
+			url : '/SpotRecord/findAllSpotRecordfd.action?cs='+entry_number,
 			page : {
 				theme : '#405467'
 			},
@@ -114,83 +102,35 @@ function creditTrialList() {
 			skin : 'line', // 行边框风格
 
 			cols : [ [ // 表头
-			{
-				field : 'entry_number',
-				title : '报单编号'
-			}, {
-				field : 'name',
-				title : '轨迹ID'
-			}, {
-				field : 'phone',
-				title : '实地时间'
-			},{
-				field : 'phone',
-				title : '实地地址'
-			}, {
-				field : 'operation',
-				title : '操作',
-				toolbar : '#operation'
-			}, ] ]
-		});
-
-		// 搜索
-
-		var active = {
-			reload : function() {
-				// 执行重载
-				table.reload('testReload', {
-					url : '/HousePropertyMortgage/listAllAndPhone.action',
-					page : {
-						curr : 1
-					// 重新从第 1 页开始
-					},
-					where : {
-						phone : $('#demoReload').val()
-					},
-					done : function() {
-						console.log('完成')
-					}
-				});
-			}
-		};
-
-		$('#demoReload').on('input', function() {
-			var type = $(this).data('type');
-			console.log(type);
-			active[type] ? active[type].call(this) : '';
-		});
+			           {
+							field : 'report_id',
+							title : '报单编号'
+						}, {
+							field : 'trid',
+							title : '轨迹ID'
+						}, {
+							field : 'create_time',
+							title : '实地时间',
+							templet : function(d) {
+								return timeStamp2String(d.create_time)
+							}
+						},{
+							field : 'address',
+							title : '实地地址'
+						}, {
+							field : 'operation',
+							title : '操作',
+							toolbar : '#operation'
+						}, ] ]
+					});
 
 		// 监听行工具事件
 		table.on('tool(realEstateMortgage)', function(obj) {
 			var data = obj.data;
-			console.log(obj);
 			if (obj.event == 'see') {
-				window.location.href = "creditTrialInfo.jsp?id=" + data.id;
+				window.location.href = "creditTrialInfo.jsp?trid=" + data.trid;
 			}
 		});
 
 	});
-}
-var formData = null;
-// 页面加载执行
-function onLoadPage(name) {
-	console.log('aaa');
-	var id = getHrefParam(name);
-	$.ajax({
-		url : '/HousePropertyMortgage/selectById.action',
-		type : 'post',
-		dataType : 'json',
-		data : {
-			id : id
-		},
-		async : false,
-		success : function(result) {
-			console.log(result);
-			formData = result.data;
-		}
-	});
-	console.log(formData);
-}
-function creditTrialInfo() {
-	
 }

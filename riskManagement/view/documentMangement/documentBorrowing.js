@@ -113,7 +113,6 @@ function documentBorrowing() {
 var formData = null;
 
 function onLoadPage(name) {
-	console.log('aaa');
 	var report_id = getHrefParam(name);
 	$.ajax({    
 		url : '/RecordManageSave/findRecordByRecordId.action',
@@ -124,17 +123,14 @@ function onLoadPage(name) {
 		},
 		async : false,
 		success : function(result) {
-			console.log(result);
 			formData = result.data;
 		}
 	});
-	console.log(formData);
 }
 
 
 function documentBorrowingInfo() {
 	onLoadPage("report_id");
-	//console.log(formData);
 	layui.use([ 'form', 'table' ], function() {
 		var form = layui.form, table = layui.table;
 
@@ -163,7 +159,6 @@ function documentBorrowingInfo() {
 				dataType : 'json',
 				data : data.field,
 				success : function(data) {
-					console.log(data);
 					if (data.code == 1) {
 						// 墨绿深蓝风
 						layerMsgPath('修改成功', 'documentBorrowing.jsp', '')

@@ -86,14 +86,12 @@ function carEvaluation() {
 
 		$('#demoReload').on('input', function() {
 			var type = $(this).data('type');
-			console.log(type);
 			active[type] ? active[type].call(this) : '';
 		});
 
 		// 监听行工具事件
 		table.on('tool(realEstateMortgage)', function(obj) {
 			var data = obj.data;
-			// console.log(data);
 			if (obj.event == 'see') {
 				window.location.href = "carEvaluationInfo.jsp?id=" + data.id;
 
@@ -108,7 +106,6 @@ var formImgUrl = null;
 
 function onLoadPage(name) {
 	var id = getHrefParam(name);
-	console.log(id);
 	$.ajax({
 		url : '/VehicleMortgage/getDetailsById.action',
 		type : 'post',
@@ -118,7 +115,6 @@ function onLoadPage(name) {
 		},
 		async : false,
 		success : function(result) {
-			console.log(result);
 			formData = result.data;
 			$.ajax({
 				url : '/photo/queryImage.action',
@@ -128,18 +124,15 @@ function onLoadPage(name) {
 				},
 				async : false,
 				success : function(result) {
-					console.log(result);
 					formImgUrl = result;
 				}
 			});
 		}
 	});
-	console.log(formData);
 }
 
 function carEvaluationInfo() {
 	onLoadPage('id');
-	console.log(formData);
 	layui.use([ 'form' ], function() {
 		var form = layui.form;
 
@@ -149,16 +142,14 @@ function carEvaluationInfo() {
 		// 监听提交
 		form.on('submit(formDemo)', function(data) {
 			$.post('/VehicleMortgage/VehicleMortgageBusFeedback.action', data.field, function(data) {
-				console.log(data);
 				if (data.code == 1) {
 					layerMsgPath('修改成功', 'carEvaluation.jsp', '');
 				}
 			});
-			// console.log(data.field);
 			return false;
 		});
 		// 监听通过
-		if (formData.data.status > 2) {
+		if (formData.status > 2) {
 			layerNOPath();	
 		}
 	});

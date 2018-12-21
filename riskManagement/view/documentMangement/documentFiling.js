@@ -100,7 +100,6 @@ function documentFiling() {
 		// 监听行工具事件
 		table.on('tool(realEstateMortgage)', function(obj) {
 			var data = obj.data;
-			console.log(obj);
 			if (obj.event == 'see') {
 				window.location.href = "documentFilingInfo.jsp?report_id=" + data.report_id;
 			}
@@ -115,7 +114,6 @@ var formData = null;
 function onLoadPage(name) {
 	
 	var report_id = getHrefParam(name);
-	console.log(report_id);
 	$.ajax({
 		url : '/RecordManageSave/findRecordByRecordId.action',
 		type : 'post',
@@ -125,7 +123,6 @@ function onLoadPage(name) {
 		},
 		async : false,
 		success : function(result) {
-			console.log(result);
 			formData = result.data;
 		}
 	});
@@ -145,18 +142,15 @@ function documentFilingAdd() {
 		})
 		// 监听提交
 		form.on('submit(formDemo)', function(data) {
-			console.log(data.field);
 			$.ajax({
 				url : '/RecordManageSave/addRecord.action',
 				type : 'post',
 				dataType : 'json',
 				data : data.field,
 				success : function(data) {
-					console.log(data);
 					if (data.code == 1) {
 						layerMsgPath('修改成功', 'documentFiling.jsp', '')
 					} else {
-						console.log('修改失败！');
 					}
 				}
 			})
@@ -184,7 +178,6 @@ function documentFilingInfo() {
 
 		// 修改档案提交事件监听
 		form.on('submit(update1)', function(data) {
-			console.log(data);
 			$.ajax({
 				url : '/RecordManageSave/updateRecordById.action',
 				type : 'post',
@@ -196,7 +189,6 @@ function documentFilingInfo() {
 					archivet_location : data.field.archivet_location
 				},
 				success : function(data) {
-					console.log(data);
 					if (data.code == 1) {
 						// 墨绿深蓝风
 						layerMsgPath('修改成功', 'documentFiling.jsp', '')
@@ -204,7 +196,6 @@ function documentFilingInfo() {
 					} else if (data.code == 0) {
 						layer.msg('请选择要修改的内容！');
 					} else {
-						console.log('修改失败！');
 					}
 
 				}

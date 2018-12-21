@@ -62,7 +62,6 @@ function housingCollection() {
 						phone : $('#demoReload').val()
 					},
 					done : function() {
-						console.log('完成')
 					}
 				});
 			}
@@ -70,13 +69,11 @@ function housingCollection() {
 
 		$('#demoReload').on('input', function() {
 			var type = $(this).data('type');
-			console.log(type);
 			active[type] ? active[type].call(this) : '';
 		});
 		// 监听行工具事件
 		table.on('tool(realEstateMortgage)', function(obj) {
 			var data = obj.data;
-			console.log(obj);
 			if (obj.event == 'see') {
 				window.location.href = "housingCollectionInfo.jsp?entry_number=" + data.entry_number;
 			}
@@ -87,7 +84,6 @@ function housingCollection() {
 
 function housingCollectionInfo() {
 	onLoadPage('entry_number');
-	console.log(formData);
 	layui.use([ 'form' ], function() {
 		var form = layui.form;
 
@@ -101,7 +97,6 @@ function housingCollectionInfo() {
 var formData = null;
 // 页面加载执行
 function onLoadPage(name) {
-	console.log('aaa');
 	var entry_number = getHrefParam(name);
 	$.ajax({
 		url : '/LiquidateManage/findHousePropertyByEntry_number.action',
@@ -112,10 +107,8 @@ function onLoadPage(name) {
 		},
 		async : false,
 		success : function(result) {
-			console.log(result);
 			formData = result.data;
 		}
 	});
-	console.log(formData);
 }
 

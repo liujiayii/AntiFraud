@@ -75,7 +75,6 @@ function carEvaluation() {
 						temp : "assetEvaluation"
 					},
 					done : function() {
-						console.log('完成')
 					}
 				});
 			}
@@ -83,14 +82,12 @@ function carEvaluation() {
 
 		$('#demoReload').on('input', function() {
 			var type = $(this).data('type');
-			console.log(type);
 			active[type] ? active[type].call(this) : '';
 		});
 
 		// 监听行工具事件
 		table.on('tool(realEstateMortgage)', function(obj) {
 			var data = obj.data;
-			console.log(data.status);
 			if (data.status == 1) {
 				window.location.href = "carEvaluationFail.jsp?id=" + data.id;
 			} else {
@@ -106,7 +103,6 @@ var formData = null;
 var formImgUrl = null;
 // 页面加载执行
 function onLoadPage(name) {
-	console.log('aaa');
 	var id = getHrefParam(name);
 	$.ajax({
 		url : '/VehicleMortgage/selectIdVehicleMortgage.action',
@@ -117,7 +113,6 @@ function onLoadPage(name) {
 		},
 		async : false,
 		success : function(result) {
-			console.log(result);
 			formData = result.data;
 			$.ajax({
 				url : '/photo/queryImage.action',
@@ -127,20 +122,17 @@ function onLoadPage(name) {
 				},
 				async : false,
 				success : function(result) {
-					console.log(result);
 					formImgUrl = result;
 				}
 			});
 		}
 	});
-	console.log(formData);
 }
 
 function carEvaluationInfo() {
 	// 页面加载执行
 
 	onLoadPage("id");
-	console.log(formData);
 	layui.use([ 'form' ], function() {
 		var form = layui.form;
 
@@ -149,7 +141,6 @@ function carEvaluationInfo() {
 
 		// 监听提交
 		form.on('submit(suc)', function(data) {
-			console.log('通过');
 			$.ajax({
 				url : '/VehicleMortgage/ResultVehicleMortgage.action',
 				type : 'post',
@@ -193,7 +184,6 @@ function carEvaluationFail() {
 		}
 		// 监听提交
 		form.on('submit(Failform)', function(data) {
-			console.log(data.field);
 			data.field['status'] = 1;
 			$.ajax({
 				url : '/VehicleMortgage/ResultVehicleMortgage.action',
@@ -201,7 +191,6 @@ function carEvaluationFail() {
 				dataType : 'json',
 				data : data.field,
 				success : function(result) {
-					console.log(result);
 					// 墨绿深蓝风
 					layerMsgPath('已拒绝', 'carEvaluation.jsp', '');
 

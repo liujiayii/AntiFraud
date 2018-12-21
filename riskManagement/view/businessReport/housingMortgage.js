@@ -79,7 +79,6 @@ function housingMortgage() {
 						temp : "businessReport"
 					},
 					done : function() {
-						console.log('完成')
 					}
 				});
 			}
@@ -87,14 +86,12 @@ function housingMortgage() {
 
 		$('#demoReload').on('input', function() {
 			var type = $(this).data('type');
-			console.log(type);
 			active[type] ? active[type].call(this) : '';
 		});
 
 		// 监听行工具事件
 		table.on('tool(realEstateMortgage)', function(obj) {
 			var data = obj.data;
-			console.log(obj);
 			if (obj.event == 'see') {
 				window.location.href = "housingMortgageInfo.jsp?id=" + data.id;
 			}
@@ -117,7 +114,6 @@ var formData = null;
 var formImgUrl = null;
 // 页面加载执行
 function onLoadPage(name) {
-	console.log('aaa');
 	var id = getHrefParam(name);
 	$.ajax({
 		url : '/HousePropertyMortgage/selectById.action',
@@ -128,7 +124,6 @@ function onLoadPage(name) {
 		},
 		async : false,
 		success : function(result) {
-			console.log(result);
 			formData = result.data;
 			$.ajax({
 				url : '/photo/queryImage.action',
@@ -138,11 +133,9 @@ function onLoadPage(name) {
 				},
 				async : false,
 				success : function(result) {
-					console.log(result);
 					formImgUrl = result;
 				}
 			});
 		}
 	});
-	console.log(formData);
 }

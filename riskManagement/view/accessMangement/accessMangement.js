@@ -58,7 +58,6 @@ function accessMangement() {
 						phone : $('#demoReload').val()
 					},
 					done : function() {
-						console.log('完成')
 					}
 				});
 			}
@@ -66,12 +65,10 @@ function accessMangement() {
 
 		$('#demoReload').on('input', function() {
 			var type = $(this).data('type');
-			console.log(type);
 			active[type] ? active[type].call(this) : '';
 		});
 		// 监听行工具事件
 		function changeStatus(id, status) {
-			console.log(id, status)
 			$.ajax({
 				url : '/user/updateUserStatus.action',
 				type : 'post',
@@ -81,7 +78,6 @@ function accessMangement() {
 					status : status
 				},
 				success : function() {
-					console.log('b')
 				}
 			})
 
@@ -92,7 +88,6 @@ function accessMangement() {
 			var url = '';
 
 			if (obj.event == 'lock') {
-				console.log(data.status);
 				if (data.status === 1) {
 					changeStatus(data.id, data.status);
 					obj.update({
@@ -100,7 +95,6 @@ function accessMangement() {
 					});
 
 				} else if (data.status === 2) {
-					console.log(data.status);
 					changeStatus(data.id, data.status);
 					obj.update({
 						status : 1
@@ -124,7 +118,6 @@ function accessControl() {
 		// 监听提交
 
 		form.on('submit(control)', function(data) {
-			console.log(data.field) // 当前容器的全部表单字段，名值对形式：{name: value}
 
 			// 将Object的属性输出成Array
 			function objOfPropertyToArr(object) {
@@ -151,7 +144,6 @@ function accessControl() {
 				},
 				traditional : true, // 如果要传数组，这行一定要加！用传统的方式来序列化数据
 				success : function() {
-					console.log(accessArr)
 					// 墨绿深蓝风
 					layerMsgPath('修改成功', 'accessMangement.jsp', '')
 				}
@@ -168,9 +160,7 @@ function formVal() {
 	layui.use([ 'form' ], function() {
 		var form = layui.form;
 		// 表单初始赋值
-		console.log('赋值');
 		form.val("formTest", formData)
-		console.log('延迟赋值');
 	})
 }
 // 页面加载执行
@@ -179,12 +169,9 @@ function onLoadPage(name) {
 	$.post('/popedom/popedomList.action', {
 		id : id
 	}, function(result) {
-		console.log(result);
-		console.log('复现');
 		for (var n = 0; n < result.data.length; n++) {
 			formData['pid' + result.data[n].pid] = true
 		}
-		console.log(formData)
 		formVal();
 	})
 }
@@ -195,17 +182,12 @@ function accessMangementAdd() {
 		// 监听提交
 
 		form.on('submit(accessAdd)', function(data) {
-
-			console.log(data.field) // 当前容器的全部表单字段，名值对形式：{name: value}
-
-			console.log('a')
 			$.ajax({
 				url : '/user/insertUser.action',
 				type : 'post',
 				dataType : 'json',
 				data : data.field,
 				success : function() {
-					console.log('成功')
 					// 墨绿深蓝风
 					layerMsgPath('添加成功', 'accessMangement.jsp', '')
 				}

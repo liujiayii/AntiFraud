@@ -81,7 +81,6 @@ function housingEvaluation() {
 						temp : "assetEvaluation"
 					},
 					done : function() {
-						console.log('完成')
 					}
 				});
 			}
@@ -89,14 +88,12 @@ function housingEvaluation() {
 
 		$('#demoReload').on('input', function() {
 			var type = $(this).data('type');
-			console.log(type);
 			active[type] ? active[type].call(this) : '';
 		});
 
 		// 监听行工具事件
 		table.on('tool(realEstateMortgage)', function(obj) {
 			var data = obj.data;
-			console.log(data.status);
 			if (data.status == 1) {
 				window.location.href = "housingEvaluationFail.jsp?id=" + data.id;
 			} else {
@@ -112,7 +109,6 @@ var formData = null;
 var formImgUrl = null;
 // 页面加载执行
 function onLoadPage(name) {
-	console.log('aaa');
 	var id = getHrefParam(name);
 	$.ajax({
 		url : '/HousePropertyMortgage/selectById.action',
@@ -123,7 +119,6 @@ function onLoadPage(name) {
 		},
 		async : false,
 		success : function(result) {
-			console.log(result);
 			formData = result.data;
 			$.ajax({
 				url : '/photo/queryImage.action',
@@ -133,18 +128,15 @@ function onLoadPage(name) {
 				},
 				async : false,
 				success : function(result) {
-					console.log(result);
 					formImgUrl = result;
 				}
 			});
 		}
 	});
-	console.log(formData);
 }
 
 function housingEvaluationInfo() {
 	onLoadPage("id");
-	console.log(formData);
 	layui.use([ 'form' ], function() {
 		var form = layui.form;
 
@@ -153,7 +145,6 @@ function housingEvaluationInfo() {
 
 		// 监听提交
 		form.on('submit(suc)', function(data) {
-			console.log('通过');
 
 			$.ajax({
 				url : '/HousePropertyMortgage/ResultHousePropertyMortgage.action',
@@ -165,7 +156,6 @@ function housingEvaluationInfo() {
 					status : 2
 				},
 				success : function(result) {
-					console.log(result);
 					// 墨绿深蓝风
 					layerMsgPath('已通过', 'housingEvaluation.jsp', '');
 				}
@@ -193,7 +183,6 @@ function housingEvaluationInfo() {
 function housingEvaluationFail() {
 
 	onLoadPage("id");
-	console.log(formData);
 	layui.use([ 'form' ], function() {
 		var form = layui.form;
 		// 表单初始赋值
@@ -215,7 +204,6 @@ function housingEvaluationFail() {
 				dataType : 'json',
 				data : data.field,
 				success : function(result) {
-					console.log(result);
 					// 墨绿深蓝风
 					layerMsgPath('已拒绝', 'housingEvaluation.jsp', '');
 				}

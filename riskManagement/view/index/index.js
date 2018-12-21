@@ -11,7 +11,6 @@ $(document).ready(function() {
 		dataType : 'json',
 		async : false,
 		success : function(result) {
-			console.log(result);
 			$('.housing').text(result.count);
 			countArr.push(result.count)
 		}
@@ -22,7 +21,6 @@ $(document).ready(function() {
 		dataType : 'json',
 		async : false,
 		success : function(result) {
-			console.log(result);
 			$('.car').text(result.count);
 			countArr.push(result.count)
 		}
@@ -33,7 +31,6 @@ $(document).ready(function() {
 		dataType : 'json',
 		async : false,
 		success : function(result) {
-			console.log(result);
 			$('.credit').text(result.count);
 			countArr.push(result.count)
 		}
@@ -43,7 +40,6 @@ $(document).ready(function() {
 		type : 'get',
 		dataType : 'json',
 		success : function(result) {
-			console.log(result);
 			$('.all').text(result.count);
 		}
 	});
@@ -53,7 +49,6 @@ $(document).ready(function() {
 		dataType : 'json',
 		async : false,
 		success : function(result) {
-			console.log(result);
 			$('.housing_money').text(result.data);
 			moneyArr.push(result.data);
 		}
@@ -64,7 +59,6 @@ $(document).ready(function() {
 		dataType : 'json',
 		async : false,
 		success : function(result) {
-			console.log(result);
 			$('.car_money').text(result.data);
 			moneyArr.push(result.data);
 		}
@@ -75,7 +69,6 @@ $(document).ready(function() {
 		dataType : 'json',
 		async : false,
 		success : function(result) {
-			console.log(result);
 			$('.credit_money').text(result.data);
 			moneyArr.push(result.data);
 		}
@@ -86,12 +79,9 @@ $(document).ready(function() {
 		type : 'get',
 		dataType : 'json',
 		success : function(result) {
-			console.log(result);
 			$('.all_money').text(result.data);
 		}
 	});
-	console.log(countArr);
-	console.log(moneyArr);
 	// 基于准备好的dom，初始化echarts实例
 	var myCount = echarts.init(document.getElementById('count'));
 	var myMoney = echarts.init(document.getElementById('money'));

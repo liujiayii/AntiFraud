@@ -72,7 +72,6 @@ function carFormalities() {
 						phone : $('#demoReload').val()
 					},
 					done : function() {
-						console.log('完成')
 					}
 				});
 			}
@@ -80,13 +79,11 @@ function carFormalities() {
 
 		$('#demoReload').on('input', function() {
 			var type = $(this).data('type');
-			console.log(type);
 			active[type] ? active[type].call(this) : '';
 		});
 		// 监听行工具事件
 		table.on('tool(realEstateMortgage)', function(obj) {
 			var data = obj.data;
-			console.log(obj);
 			if (obj.event == 'see') {
 				window.location.href = "carFormalitiesInfo.jsp?id=" + data.id;
 			}
@@ -111,9 +108,6 @@ function carFormalitiesInfo() {
 		});
 		// 监听submit提交
 		form.on('submit(formDemo)', function(data) {
-			console.log(data.elem) // 被执行事件的元素DOM对象，一般为button对象
-			console.log(data.form) // 被执行提交的form对象，一般在存在form标签时才会返回
-			console.log(data.field) // 当前容器的全部表单字段，名值对形式：{name: value}
 			delete data.field['file'];
 			var formJson = JSON.stringify(data.field);
 			$.ajax({
@@ -123,7 +117,6 @@ function carFormalitiesInfo() {
 				data : formJson,
 				contentType : 'application/json',
 				success : function(result) {
-					console.log(result);
 					// 墨绿深蓝风
 					layerMsgPath('修改成功', 'carFormalities.jsp', '');
 				}
@@ -173,7 +166,6 @@ function carFormalitiesInfo() {
 				});
 			},
 			done : function(res, index, upload) {
-				console.log(res);
 				if (res.code == 1) { // 上传成功
 					var tr = demoListView.find('tr#upload-' + index), tds = tr.children();
 					tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
@@ -196,7 +188,6 @@ function carFormalitiesInfo() {
 var formData = null;
 var formDataSub = null;
 function onLoadPage(name) {
-	console.log('aaa');
 	var id = getHrefParam(name);
 	$.ajax({
 		url : '/ReplenishProcedure/showInfoByVehicleId.action',
@@ -207,9 +198,7 @@ function onLoadPage(name) {
 		},
 		async : false,
 		success : function(result) {
-			console.log(result);
 			formData = result.data;
-			console.log(entry_number);
 			$.ajax({
 				url : '/ReplenishProcedureImage/findReplenishProcedureByEntry_number.action',
 				type : 'post',
@@ -219,12 +208,9 @@ function onLoadPage(name) {
 				},
 				async : false,
 				success : function(result) {
-					console.log(result);
-					formDataSub = result;
-					console.log(formDataSub)
+					formDataSub = result.data;
 				}
 			});
 		}
 	});
-	console.log(formData);
 }

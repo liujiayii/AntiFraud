@@ -50,9 +50,6 @@ function contractAudit() {
 		// 搜索
 
 		form.on('select(upload)', function(data) {
-			// console.log(data.elem); //得到select原始DOM对象
-			console.log(data.value); // 得到被选中的值
-			// console.log(data.othis); //得到美化后的DOM对象
 
 			if (data.value == 'house') {
 				// 执行重载
@@ -63,7 +60,6 @@ function contractAudit() {
 					// 重新从第 1 页开始
 					},
 					done : function() {
-						console.log('1完成')
 					}
 				});
 			} else if (data.value == 'car') {
@@ -75,7 +71,6 @@ function contractAudit() {
 					// 重新从第 1 页开始
 					},
 					done : function() {
-						console.log('2完成')
 					}
 				});
 			} else if (data.value == 'credit') {
@@ -87,7 +82,6 @@ function contractAudit() {
 					// 重新从第 1 页开始
 					},
 					done : function() {
-						console.log('3完成')
 					}
 				});
 			}
@@ -108,7 +102,6 @@ function contractAudit() {
 var formData = null;
 
 function onLoadPage(name) {
-	console.log('aaa');
 	var report_id = getHrefParam(name);
 	$.ajax({
 		url : '/Compact/findCompactByEntry_number.action',
@@ -119,16 +112,13 @@ function onLoadPage(name) {
 		},
 		async : false,
 		success : function(result) {
-			console.log(result);
 			formData = result.data;
 		}
 	});
-	console.log(formData);
 }
 
 function contractAuditInfo() {
 	onLoadPage("entry_number");
-	console.log(formData);
 	layui.use([ 'form' ], function() {
 		var form = layui.form;
 		// 表单初始赋值
@@ -139,11 +129,10 @@ function contractAuditInfo() {
 			'contract_id' : formData[0].contract_id,
 			'create_time' : timeStamp2String(formData[0].create_time),
 			'update_time' : timeStamp2String(formData[formData.length-1].update_time),
-			'remark' : formData.data[0].remark
+			'remark' : formData[0].remark
 		})
 		// 监听提交
 		form.on('submit(suc)', function(data) {
-			console.log('通过');
 			$.ajax({
 				url : '/SpotRecord/judgementResult.action',
 				type : 'post',
@@ -155,7 +144,6 @@ function contractAuditInfo() {
 				},
 				async : false,
 				success : function(result) {
-					console.log(result);
 					// 墨绿深蓝风
 					if(result.code === 1){
 						layerMsgPath(result.msg, 'contractAudit.jsp', '');
@@ -167,7 +155,6 @@ function contractAuditInfo() {
 			});
 		})
 		form.on('submit(fail)', function(data) {
-			console.log('不通过');
 			$.ajax({
 				url : '/SpotRecord/judgementResult.action',
 				type : 'post',
@@ -179,7 +166,6 @@ function contractAuditInfo() {
 				},
 				async : false,
 				success : function(result) {
-					console.log(result);
 					// 墨绿深蓝风
 					layerMsgPath('已拒绝', 'contractAudit.jsp', '');
 				}

@@ -41,9 +41,6 @@ function uploadContract() {
 		// 搜索
 
 		form.on('select(upload)', function(data) {
-			// console.log(data.elem); //得到select原始DOM对象
-			console.log(data.value); // 得到被选中的值
-			// console.log(data.othis); //得到美化后的DOM对象
 
 			if (data.value == 'all') {
 				// 执行重载
@@ -54,7 +51,6 @@ function uploadContract() {
 					// 重新从第 1 页开始
 					},
 					done : function() {
-						console.log('1完成')
 					}
 				});
 			} else if (data.value == 'yes') {
@@ -66,7 +62,6 @@ function uploadContract() {
 					// 重新从第 1 页开始
 					},
 					done : function() {
-						console.log('2完成')
 					}
 				});
 			} else if (data.value == 'no') {
@@ -78,7 +73,6 @@ function uploadContract() {
 					// 重新从第 1 页开始
 					},
 					done : function() {
-						console.log('3完成')
 					}
 				});
 			}
@@ -87,7 +81,6 @@ function uploadContract() {
 		// 监听行工具事件
 		table.on('tool(realEstateMortgage)', function(obj) {
 			var data = obj.data;
-			console.log(obj);
 			reportId = data.report_id;
 			if (obj.event == 'see') {
 				window.location.href = "uploadContractInfo.jsp?report_id=" + data.report_id;
@@ -101,7 +94,6 @@ function uploadContract() {
 var formData = null;
 
 function onLoadPage(name) {
-	console.log('aaa');
 	var report_id = getHrefParam(name);
 	$.ajax({
 		url : '/Compact/findCompactByEntry_number.action',
@@ -112,16 +104,13 @@ function onLoadPage(name) {
 		},
 		async : false,
 		success : function(result) {
-			console.log(result);
 			formData = result.data;
 		}
 	});
-	console.log(formData);
 }
 
 function uploadContractInfo() {
 	onLoadPage("report_id");
-	console.log(formData);
 	layui.use([ 'form', 'upload' ], function() {
 		var form = layui.form, upload = layui.upload;
 		// 表单初始赋值
@@ -181,7 +170,6 @@ function uploadContractInfo() {
 				});
 			},
 			done : function(res, index, upload) {
-				console.log(res);
 				if (res.code == 1) { // 上传成功
 					var tr = demoListView.find('tr#upload-' + index), tds = tr.children();
 					tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');

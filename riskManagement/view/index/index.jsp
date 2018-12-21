@@ -2,7 +2,7 @@
 <title>风控反欺诈系统</title>
 
 <%@ include file="/riskManagement/templates/headerMenu.jsp"%>
-<script src="/riskManagement/lib/echarts.js"></script>
+<script src="/riskManagement/lib/echarts.simple.min.js"></script>
 <div style="padding: 15px;">
 	<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
 		<legend>
@@ -79,8 +79,6 @@
 	<div style="text-align: center;" class="margin-top-15">
 		<table id="realEstateMortgage" lay-filter="realEstateMortgage"></table>
 	</div>
-
-
 </div>
 
 <script src="index.js"></script>

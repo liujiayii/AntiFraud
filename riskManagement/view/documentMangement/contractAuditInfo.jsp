@@ -76,10 +76,9 @@
 <script>
 	$(document).ready(function() {
 		contractAuditInfo();
-		for (var i = 0; i < formData.data.length; i++) {
-			console.log(i)
+		for (var i = 0; i < formData.length; i++) {
 			$('.imgList').append($($('.imgBox')[0]).clone());
-			$($('.imgBox img')[i]).attr('src', formData.data[i].img_url);			
+			$($('.imgBox img')[i]).attr('src', formData[i].img_url);			
 		}		
 	})
 </script>

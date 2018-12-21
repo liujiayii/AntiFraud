@@ -5,8 +5,8 @@ $(document).ready(function() {
 });
 
 function managementAfterLoan() {
-	layui.use([ 'table' ], function() {
-		var table = layui.table;
+	layui.use([ 'table', 'form' ], function() {
+		var table = layui.table, form = layui.form;
 
 		// 第一个实例
 		table.render({
@@ -80,10 +80,49 @@ function managementAfterLoan() {
 				});
 			}
 		};
+		// 搜索
+
+		form.on('select(upload)', function(data) {
+
+			if (data.value == '0') {
+				// 执行重载
+				table.reload('testReload', {
+					url : '/AcceptController/findLoanOverdue.action?is_overdue=' + data.value,
+					page : {
+						curr : 1
+					// 重新从第 1 页开始
+					},
+					done : function() {
+					}
+				});
+			} else if (data.value == '1') {
+				// 执行重载
+				table.reload('testReload', {
+					url : '/AcceptController/findLoanOverdue.action?is_overdue=' + data.value,
+					page : {
+						curr : 1
+					// 重新从第 1 页开始
+					},
+					done : function() {
+					}
+				});
+			} else if (data.value == '2') {
+				// 执行重载
+				table.reload('testReload', {
+					url : '/AcceptController/Accept.action',
+					page : {
+						curr : 1
+					// 重新从第 1 页开始
+					},
+					done : function() {
+					}
+				});
+			}
+
+		});
 
 		$('#demoReload').on('input', function() {
 			var type = $(this).data('type');
-			console.log(type);
 			active[type] ? active[type].call(this) : '';
 		});
 	})

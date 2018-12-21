@@ -44,7 +44,6 @@ layui.use([ 'table', 'form', 'layer' ], function() {
 			$($('.imgBox img')[0]).attr('src', '../../images/nodata.png');
 		} else {
 			for (var i = 0; i < formImgUrl.data.length; i++) {
-				console.log(i)
 				$('.imgList').append($($('.imgBox')[0]).clone());
 				$($('.imgBox img')[i]).attr('src', formImgUrl.data[i].img_url);
 			}
@@ -58,8 +57,6 @@ layui.use([ 'table', 'form', 'layer' ], function() {
 		area : 'auto',
 		maxWidth : 800,
 		tab : function(pic, layero) {
-			console.log(layero) // 当前图片的一些信息
-			// layero['0'].style.top = '';
 			$('#layui-layer-photos').css('height', 'auto');
 			$('.layui-layer-photos').css('top', '');
 		}
@@ -92,24 +89,21 @@ function getHrefParam(key) {
 }
 // 格式化Date日期时间数据(yyyy-MM-dd hh:mm:ss)
 function timeStamp2String(time) {
-	var datetime = new Date();
-	datetime.setTime(time);
+	var datetime = new Date(time);
 	var year = datetime.getFullYear();
 	var month = datetime.getMonth() + 1 < 10 ? "0" + (datetime.getMonth() + 1) : datetime.getMonth() + 1;
 	var date = datetime.getDate() < 10 ? "0" + datetime.getDate() : datetime.getDate();
-	var hour = datetime.getHours() < 10 ? "0" + datetime.getHours() : datetime.getHours();
-	var minute = datetime.getMinutes() < 10 ? "0" + datetime.getMinutes() : datetime.getMinutes();
-	var second = datetime.getSeconds() < 10 ? "0" + datetime.getSeconds() : datetime.getSeconds();
 	return year + "-" + month + "-" + date;
 }
-// 表单验证
+// 表单验证提示方式
 $(document).ready(function() {
+	console.log($("#console").text());
 	$('input').attr('lay-vertype', 'alert');
 	$('select').attr('lay-vertype', 'alert');
 	$('textarea').attr('lay-vertype', 'alert');
 })
 // 表单赋值对象
-function getFormData() {
+function getFormData() {//业务信息表
 	var obj = {
 		id : formData.id,
 		home_number : formData.home_number,
@@ -147,7 +141,7 @@ function getFormData() {
 	}
 	return obj;
 }
-function getSubFormData() {
+function getSubFormData() {//补充手续表
 	var obj = {
 		id : formData.id,
 		entry_number : formData.entry_number,
@@ -209,7 +203,7 @@ function getSubFormData() {
 	}
 	return obj;
 }
-function getCollectionFormData() {
+function getCollectionFormData() {//请收管理表
 	var obj = {
 		entry_number : formData.entry_number,
 		name : formData.name,
@@ -323,12 +317,15 @@ function autoNaviUtil(autoNaviUtilPath) {
 		$('<div id="loadingTip">加载数据，请稍候...</div>').appendTo(document.body);
 
 		$.getJSON(autoNaviUtilPath, function(d) {
-
 			$('#loadingTip').remove();
-
+			var position = [];
+			for(var i = 0;i<d.location.length;i++){
+				var a = d.location[i].substring(1, (d.location[i].length - 1));
+				position[i] = a.split(',');
+			}
 			pathSimplifierIns.setData([{
-				name: d[0].name,
-				path: d[0].path
+				name: '轨迹',
+				path: position
 			}]);
 
 			//initRoutesContainer(d);
@@ -344,7 +341,7 @@ function autoNaviUtil(autoNaviUtilPath) {
 			//创建一个巡航器
 			var navg1 = pathSimplifierIns.createPathNavigator(0, {
 				loop : true,
-				speed : 500000,
+				speed : 3000,
 				pathNavigatorStyle : {
 					width : 16,
 					height : 32,

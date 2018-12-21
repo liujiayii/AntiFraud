@@ -87,7 +87,6 @@ function housingEvaluation() {
 
 		$('#demoReload').on('input', function() {
 			var type = $(this).data('type');
-			console.log(type);
 			active[type] ? active[type].call(this) : '';
 		});
 
@@ -95,7 +94,6 @@ function housingEvaluation() {
 		table.on('tool(realEstateMortgage)', function(obj) {
 			var data = obj.data;
 
-			// console.log(data);
 			if (obj.event == 'see') {
 
 				window.location.href = "housingEvaluationInfo.jsp?id=" + data.id;
@@ -110,7 +108,6 @@ var formImgUrl = null;
 // 页面加载执行
 
 function onLoadPage(name) {
-	console.log('aaa');
 	var id = getHrefParam(name);
 	$.ajax({
 		url : '/HousePropertyMortgage/getDetailsById.action',
@@ -121,7 +118,6 @@ function onLoadPage(name) {
 		},
 		async : false,
 		success : function(result) {
-			console.log(result);
 			formData = result.data;
 			$.ajax({
 				url : '/photo/queryImage.action',
@@ -131,19 +127,16 @@ function onLoadPage(name) {
 				},
 				async : false,
 				success : function(result) {
-					console.log(result);
 					formImgUrl = result;
 				}
 			});
 		}
 	});
-	//console.log(formData);
 }
 
 function housingEvaluationInfo() {
 	onLoadPage('id');
 	
-	//console.log(formData);
 	layui.use([ 'form' ], function() {
 		var form = layui.form;
 
@@ -151,20 +144,17 @@ function housingEvaluationInfo() {
 		form.val('example', getFormData())
 		// 监听提交
 		form.on('submit(formDemo)', function(data) {
-			console.log('提交')
 			$.post('/HousePropertyMortgage/housePropertyMortgageBusFeedback.action',
 					data.field, 
 					function(data) {
-				console.log(data);
 				if (data.code == 1) {
 					layerMsgPath('修改成功', 'creditEvaluation.jsp', '');
 				}
 			});
-			console.log(data.field);
 			return false;
 		});
 		// 监听通过
-		if (formData.data.status > 2) {
+		if (formData.status > 2) {
 			layerNOPath();	
 		}
 	});

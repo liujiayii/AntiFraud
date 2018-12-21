@@ -48,16 +48,16 @@ layui.use([  'table' ], function() {
 		reload : function() {
 			// 执行重载
 			table.reload('testReload', {
-				url : '/FiduciaryLoan/findByPhone.action',
+				url : '/FiduciaryLoan/listAllAndPhone.action',
 				page : {
 					curr : 1
 				// 重新从第 1 页开始
 				},
 				where : {
-					phone : $('#demoReload').val()
+					phone : $('#demoReload').val(),
+					temp : "printingContract"
 				},
 				done : function() {
-					console.log('完成')
 				}
 			});
 		}
@@ -65,14 +65,12 @@ layui.use([  'table' ], function() {
 
 	$('#demoReload').on('input', function() {
 		var type = $(this).data('type');
-		console.log(type);
 		active[type] ? active[type].call(this) : '';
 	});
 
 	// 监听行工具事件
 	table.on('tool(realEstateMortgage)', function(obj) {
 		var data = obj.data;
-		console.log(obj);
 		if (obj.event == 'see') {
 			window.location.href = "/Compact/creatCompact.action?entry_number=" + data.entry_number;
 

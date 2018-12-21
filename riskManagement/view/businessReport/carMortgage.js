@@ -79,7 +79,6 @@ function carMortgage() {
 						temp : "businessReport"
 					},
 					done : function() {
-						console.log('完成')
 					}
 				});
 			}
@@ -87,14 +86,12 @@ function carMortgage() {
 
 		$('#demoReload').on('input', function() {
 			var type = $(this).data('type');
-			console.log(type);
 			active[type] ? active[type].call(this) : '';
 		});
 
 		// 监听行工具事件
 		table.on('tool(realEstateMortgage)', function(obj) {
 			var data = obj.data;
-			console.log(obj);
 			if (obj.event == 'see') {
 				window.location.href = "carMortgageInfo.jsp?id=" + data.id;
 			}
@@ -106,7 +103,6 @@ function carMortgage() {
 
 function carMortgageInfo() {
 	onLoadPage('id');
-	console.log(formData);
 	layui.use([ 'form'], function() {
 		var form = layui.form;
 
@@ -138,11 +134,9 @@ function onLoadPage(name) {
 				},
 				async : false,
 				success : function(result) {
-					console.log(result);
 					formImgUrl = result;
 				}
 			});
 		}
 	});
-	console.log(formData);
 }

@@ -3,7 +3,7 @@
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-			+ path + "/";
+			+ path;
 %>
 <!DOCTYPE html>
 <html>
@@ -13,29 +13,16 @@
 <link rel="icon" href="<%=basePath%>/riskManagement/login/images/login.jpg" type="image/x-icon" />
 <link rel="stylesheet" href="<%=basePath%>/riskManagement/lib/layui/css/layui.css">
 <link rel="stylesheet" href="<%=basePath%>/riskManagement/style/page.css">
-<script src="<%=basePath%>/riskManagement/lib/jquery.js"></script>
+<script src="<%=basePath%>/riskManagement/lib/jquery.min.js"></script>
 <script src="<%=basePath%>/riskManagement/lib/layui/layui.js"></script>
 <script src="<%=basePath%>/riskManagement/templates/utils.js"></script>
 <script type="text/javascript">
-	if(navigator.appName == 'Microsoft Internet Explorer'){
-		if(navigator.userAgent.indexOf("MSIE 5.0")>0 || navigator.userAgent.indexOf("MSIE 6.0")>0 || navigator.userAgent.indexOf("MSIE 7.0")>0) {
+	if (navigator.appName == 'Microsoft Internet Explorer') {
+		if (navigator.userAgent.indexOf("MSIE 5.0") > 0 || navigator.userAgent.indexOf("MSIE 6.0") > 0 || navigator.userAgent.indexOf("MSIE 7.0") > 0) {
 			alert('您使用的 IE 浏览器版本过低, 推荐使用 Chrome 浏览器或 IE8 及以上版本浏览器.');
 		}
 	}
-	window.sysinfo = {
-										'isfounder': 0,
-		'family': 's',
-		'siteroot': 'https://tx.lingy.cc/',
-		'siteurl': 'https://tx.lingy.cc/web/index.php?c=user&a=login',
-		'attachurl': 'https://zrdcdn.lingy.cc/',
-		'attachurl_local': 'https://tx.lingy.cc/attachment/',
-		'attachurl_remote': 'https://zrdcdn.lingy.cc/',
-		'module' : {'url' : '', 'name' : ''},
-		'cookie' : {'pre': 'e769_'},
-		'account' : null,
-		'server' : {'php' : '5.6.37'},
-	};
-	</script>
+</script>
 
 </head>
 
@@ -57,14 +44,7 @@
 			<!-- 头部区域（可配合layui已有的水平导航） -->
 			<ul class="layui-nav layui-layout-right">
 				<li class="layui-nav-item" lay-unselect><a href="javascript:;" style="color: black;"> <img src="/riskManagement/images/head.jpg" class="layui-nav-img">${user.name}
-				</a> <!--  <dl class="layui-nav-child">
-                    <dd>
-                        <a href="">基本资料</a>
-                    </dd>
-                    <dd>
-                        <a href="">安全设置</a>
-                    </dd>
-                </dl> --></li>
+				</a></li>
 				<li class="layui-nav-item" lay-unselect><a href="<%=basePath%>/logout.action"> <img src="<%=basePath%>/riskManagement/images/close.png"></a></li>
 			</ul>
 		</div>
@@ -127,7 +107,7 @@
 								<a href="/riskManagement/view/supplementaryFormalities/creditFormalities.jsp"><img src="<%=basePath%>/riskManagement/images/circular.png" class="circular">信用贷款</a>
 							</dd>
 						</dl></li>
-					<li class="layui-nav-item" id="faceTrial"><a href="javascript:;"><i class="menu-ioc layui-icon-camera-fill layui-icon"></i>面审实地</a>
+					<li class="layui-nav-item" id="faceTrial"><a href="javascript:;"><img src="<%=basePath%>/riskManagement/images/faceTrial.png" class="menu-ioc"></i>面审实地</a>
 						<dl class="layui-nav-child">
 							<dd>
 								<a href="/riskManagement/view/faceTrial/housingTrial.jsp"><img src="<%=basePath%>/riskManagement/images/circular.png" class="circular">房屋抵押</a>

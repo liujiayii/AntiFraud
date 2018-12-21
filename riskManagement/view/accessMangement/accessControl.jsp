@@ -38,6 +38,12 @@
 			</div>
 		</div>
 		<div class="layui-form-item access-form">
+			<label class="layui-form-label">面审实地：</label>
+			<div class="layui-input-block">
+				<input type="checkbox" name="pid1035" title="房屋抵押" lay-skin="primary"> <input type="checkbox" name="pid1036" title="车辆抵押" lay-skin="primary"> <input type="checkbox" name="pid1037" title="信用贷款" lay-skin="primary">
+			</div>
+		</div>
+		<div class="layui-form-item access-form">
 			<label class="layui-form-label">打印合同：</label>
 			<div class="layui-input-block">
 				<input type="checkbox" name="pid1025" title="房屋抵押" lay-skin="primary"> <input type="checkbox" name="pid1026" title="车辆抵押" lay-skin="primary"> <input type="checkbox" name="pid1027" title="信用抵押" lay-skin="primary"> <input type="checkbox" name="pid1028" title="上传合同" lay-skin="primary">

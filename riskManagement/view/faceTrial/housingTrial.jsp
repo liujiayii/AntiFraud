@@ -3,7 +3,7 @@
 
 <%@ include file="/riskManagement/templates/headerMenu.jsp"%>
 <div style="padding: 15px;">
-	<div style="position: relative;">
+	<div style="position: relative;visibility:hidden">
 		<input type="text" id="demoReload" name=phone " placeholder="输入电话号码查询" autocomplete="off" class="search-input" data-type="reload"> <i class="layui-icon layui-icon-search"></i>
 	</div>
 
