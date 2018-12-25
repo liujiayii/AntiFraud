@@ -51,7 +51,7 @@ function creditTrial() {
 			reload : function() {
 				// 执行重载
 				table.reload('testReload', {
-					url : '/HousePropertyMortgage/listAllAndPhone.action',
+					url : '/SpotRecord/findFiduciaryLoanByPhoneOrName.action',
 					page : {
 						curr : 1
 					// 重新从第 1 页开始

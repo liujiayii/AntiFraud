@@ -82,19 +82,6 @@ function housingCollection() {
 	});
 }
 
-function housingCollectionInfo() {
-	onLoadPage('entry_number');
-	layui.use([ 'form' ], function() {
-		var form = layui.form;
-
-		// 表单初始赋值
-
-		form.val('example', getCollectionFormData())
-
-	});
-}
-
-var formData = null;
 // 页面加载执行
 function onLoadPage(name) {
 	var entry_number = getHrefParam(name);
@@ -105,10 +92,14 @@ function onLoadPage(name) {
 		data : {
 			id : entry_number
 		},
-		async : false,
 		success : function(result) {
-			formData = result.data;
+			var formData = result.data;
+			layui.use([ 'form' ], function() {
+				var form = layui.form;
+				// 表单初始赋值
+				form.val('example', getCollectionFormData(formData))
+
+			});
 		}
 	});
 }
-

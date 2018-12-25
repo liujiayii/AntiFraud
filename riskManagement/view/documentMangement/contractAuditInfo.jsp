@@ -10,6 +10,7 @@
 		</div>
 	</div>
 	<form class="layui-form form-main form-main-4" action="" lay-filter="example">
+		<input type="hidden" name="id">
 		<fieldset class="layui-elem-field layui-field-title">
 			<legend>借款人身份信息</legend>
 		</fieldset>
@@ -37,9 +38,6 @@
 				<input type="text" name="create_time" autocomplete="off" class="layui-input" disabled>
 			</div>
 		</div>
-
-
-
 		<div class="layui-form-item">
 			<label class="layui-form-label">修改时间</label>
 			<div class="layui-input-inline">
@@ -47,7 +45,6 @@
 
 			</div>
 		</div>
-
 		<div class="layui-form-item remark-item">
 			<label class="layui-form-label">备注</label>
 			<div class="layui-input-inline">
@@ -57,18 +54,13 @@
 		<fieldset class="layui-elem-field layui-field-title">
 			<legend>合同</legend>
 		</fieldset>
-
 		<div class="imgList layui-clear layer-photos-demo" id="layer-photos-demo"></div>
-	</form>
-	<form class="layui-form form-main form-main-4" action="" lay-filter="sub">
 		<div class="layui-form-item btn-item margin-top-50">
 			<div class="layui-input-block page-but margin-left-150">
 				<button type="button" class="layui-btn confirm-but layui-btn-normal" lay-submit lay-filter="suc">通过</button>
 				<button type="button" class="layui-btn layui-btn-primary cancel-but" lay-submit lay-filter="fail">拒绝</button>
 			</div>
 		</div>
-
-
 	</form>
 </div>
 <script src="contractAudit.js"></script>

@@ -10,6 +10,9 @@ html, body {
 	border-top: 1px solid #72808D;
 	border-bottom: 1px solid #192431;
 }
+.layui-input, .layui-textarea {
+    padding-right: 10px;
+}
 
 .layui-disabled, .layui-disabled:hover {
 	color: #757575 !important;

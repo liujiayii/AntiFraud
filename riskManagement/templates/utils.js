@@ -36,20 +36,6 @@ layui.use([ 'table', 'form', 'layer' ], function() {
 		password : [ /^[\S]{8,12}$/, '密码必须8到12位，且不能出现空格' ]
 	});
 
-	// 业务报单、资产评估、业务反馈图片
-	var loc = window.location.href
-	if (loc.match('EvaluationInfo') || loc.match('MortgageInfo')) {
-		if (formImgUrl.data.length === 0) {
-			$('.imgList').append($($('.imgBox')[0]).clone());
-			$($('.imgBox img')[0]).attr('src', '../../images/nodata.png');
-		} else {
-			for (var i = 0; i < formImgUrl.data.length; i++) {
-				$('.imgList').append($($('.imgBox')[0]).clone());
-				$($('.imgBox img')[i]).attr('src', formImgUrl.data[i].img_url);
-			}
-		}
-
-	}
 	// 业务报单、资产评估、业务反馈图片layer
 	layer.photos({
 		photos : '#layer-photos-demo',
@@ -62,7 +48,22 @@ layui.use([ 'table', 'form', 'layer' ], function() {
 		}
 	});
 });
-
+//业务报单、资产评估、业务反馈图片
+function businessImgLayer(formImgUrl) {
+	var loc = window.location.href;
+	if(loc.match('EvaluationInfo') || loc.match('MortgageInfo')){
+		if (formImgUrl.data.length === 0) {
+			$('.imgList').append($($('.imgBox')[0]).clone());
+			$($('.imgBox img')[0]).attr('src', '../../images/nodata.png');
+		} else {
+			for (var i = 0; i < formImgUrl.data.length; i++) {
+				$('.imgList').append($($('.imgBox')[0]).clone());
+				$($('.imgBox img')[i]).attr('src', formImgUrl.data[i].img_url);
+			}
+		}
+	}
+	
+}
 // 垂直导航激活
 function navActive(index) {
 	$($('.layui-side .layui-nav-item')[index]).addClass('layui-nav-itemed');
@@ -97,13 +98,12 @@ function timeStamp2String(time) {
 }
 // 表单验证提示方式
 $(document).ready(function() {
-	console.log($("#console").text());
 	$('input').attr('lay-vertype', 'alert');
 	$('select').attr('lay-vertype', 'alert');
 	$('textarea').attr('lay-vertype', 'alert');
 })
 // 表单赋值对象
-function getFormData() {//业务信息表
+function getFormData(formData) {// 业务信息表
 	var obj = {
 		id : formData.id,
 		home_number : formData.home_number,
@@ -137,14 +137,16 @@ function getFormData() {//业务信息表
 		apply_for_limit : formData.apply_for_limit,
 		apply_for_deadline : formData.apply_for_deadline,
 		account_opening_time : formData.account_opening_time,
-		purpose_of_loan : formData.purpose_of_loan
+		purpose_of_loan : formData.purpose_of_loan,
+		remark: formData.remark,
+		status : formData.status
 	}
 	return obj;
 }
-function getSubFormData() {//补充手续表
+function getSubFormData(formDataSub) {// 补充手续表
 	var obj = {
-		id : formData.id,
-		entry_number : formData.entry_number,
+		id : formDataSub.id,
+		entry_number : formDataSub.entry_number,
 		occupational : formDataSub.occupational,
 		company_name : formDataSub.company_name,
 		industry_of_the_company : formDataSub.industry_of_the_company,
@@ -162,7 +164,7 @@ function getSubFormData() {//补充手续表
 		purpose_of_loan : formDataSub.purpose_of_loan,
 		approval_limit : formDataSub.approval_limit,
 		approval_deadline : formDataSub.approval_deadline,
-		business_type : formData.business_type,
+		business_type : formDataSub.business_type,
 		borrowing_species : formDataSub.borrowing_species,
 		reward : formDataSub.reward,
 		money_collecting_time : formDataSub.money_collecting_time,
@@ -203,7 +205,24 @@ function getSubFormData() {//补充手续表
 	}
 	return obj;
 }
-function getCollectionFormData() {//请收管理表
+function getDocumentFormData(formData) {//档案管理表
+	var obj = {
+			report_id : formData.report_id,
+			entry_number : formData.entry_number,
+			status : formData.status,
+			read_name : formData.read_name,
+			return_time : formData.return_time,
+			archivet_location : formData.archivet_location,
+			create_name: formData.create_name,
+			id : formData.id,
+			name : formData.name,
+			phone : formData.phone,
+			archivet_time : timeStamp2String(formData.archivet_time),
+			cencal_time : isNaN(formData.cencal_time)?'无':timeStamp2String(formData.cencal_time)
+	}
+	return obj;
+}
+function getCollectionFormData(formData) {// 请收管理表
 	var obj = {
 		entry_number : formData.entry_number,
 		name : formData.name,
@@ -252,9 +271,9 @@ function layerNOPath() {
 		});
 	})
 }
-//高德地图轨迹图API
+// 高德地图轨迹图API
 function autoNaviUtil(autoNaviUtilPath) {
-	//创建地图
+	// 创建地图
 	var map = new AMap.Map('container', {
 		zoom : 4
 	});
@@ -266,14 +285,14 @@ function autoNaviUtil(autoNaviUtilPath) {
 			return;
 		}
 
-		//just some colors
+		// just some colors
 		var colors = [ "#3366cc", "#dc3912", "#ff9900", "#109618", "#990099", "#0099c6", "#dd4477", "#66aa00", "#b82e2e", "#316395", "#994499", "#22aa99", "#aaaa11", "#6633cc",
 				"#e67300", "#8b0707", "#651067", "#329262", "#5574a6", "#3b3eac" ];
 
 		var pathSimplifierIns = new PathSimplifier({
 			zIndex : 100,
-			//autoSetFitView:false,
-			map : map, //所属的地图实例
+			// autoSetFitView:false,
+			map : map, // 所属的地图实例
 
 			getPath : function(pathData, pathIndex) {
 
@@ -282,7 +301,7 @@ function autoNaviUtil(autoNaviUtilPath) {
 			getHoverTitle : function(pathData, pathIndex, pointIndex) {
 
 				if (pointIndex >= 0) {
-					//point 
+					// point
 					return pathData.name + '，点：' + pointIndex + '/' + pathData.path.length;
 				}
 
@@ -319,16 +338,16 @@ function autoNaviUtil(autoNaviUtilPath) {
 		$.getJSON(autoNaviUtilPath, function(d) {
 			$('#loadingTip').remove();
 			var position = [];
-			for(var i = 0;i<d.location.length;i++){
+			for (var i = 0; i < d.location.length; i++) {
 				var a = d.location[i].substring(1, (d.location[i].length - 1));
 				position[i] = a.split(',');
 			}
-			pathSimplifierIns.setData([{
-				name: '轨迹',
-				path: position
-			}]);
+			pathSimplifierIns.setData([ {
+				name : '轨迹',
+				path : position
+			} ]);
 
-			//initRoutesContainer(d);
+			// initRoutesContainer(d);
 
 			function onload() {
 				pathSimplifierIns.renderLater();
@@ -338,7 +357,7 @@ function autoNaviUtil(autoNaviUtilPath) {
 				alert('图片加载失败！');
 			}
 
-			//创建一个巡航器
+			// 创建一个巡航器
 			var navg1 = pathSimplifierIns.createPathNavigator(0, {
 				loop : true,
 				speed : 3000,
@@ -354,4 +373,4 @@ function autoNaviUtil(autoNaviUtilPath) {
 			navg1.start();
 		});
 	});
-}	
+}

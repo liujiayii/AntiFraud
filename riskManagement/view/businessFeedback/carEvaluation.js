@@ -100,10 +100,8 @@ function carEvaluation() {
 	});
 }
 
-var formData = null;
-var formImgUrl = null;
-// 页面加载执行
 
+// 页面加载执行
 function onLoadPage(name) {
 	var id = getHrefParam(name);
 	$.ajax({
@@ -113,18 +111,25 @@ function onLoadPage(name) {
 		data : {
 			id : id
 		},
-		async : false,
 		success : function(result) {
-			formData = result.data;
+			var formData = result.data;
+			layui.use([ 'form' ], function() {
+				var form = layui.form;
+				// 表单初始赋值
+				form.val('example', getFormData(formData))
+			})
+			//监听审核
+			if (formData.status > 2) {
+				layerNOPath();
+			}
 			$.ajax({
 				url : '/photo/queryImage.action',
 				dataType : 'json',
 				data : {
 					report_id : formData.entry_number
 				},
-				async : false,
 				success : function(result) {
-					formImgUrl = result;
+					businessImgLayer(result);
 				}
 			});
 		}
@@ -134,11 +139,7 @@ function onLoadPage(name) {
 function carEvaluationInfo() {
 	onLoadPage('id');
 	layui.use([ 'form' ], function() {
-		var form = layui.form;
-
-		// 表单初始赋值
-		form.val('example', getFormData())
-		
+		var form = layui.form;		
 		// 监听提交
 		form.on('submit(formDemo)', function(data) {
 			$.post('/VehicleMortgage/VehicleMortgageBusFeedback.action', data.field, function(data) {
@@ -148,9 +149,5 @@ function carEvaluationInfo() {
 			});
 			return false;
 		});
-		// 监听通过
-		if (formData.status > 2) {
-			layerNOPath();	
-		}
 	});
 }

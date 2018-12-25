@@ -84,7 +84,7 @@
 <script src="housingCollection.js"></script>
 <script>
 	$(document).ready(function() {
-		housingCollectionInfo();
+		onLoadPage('entry_number');
 	})
 </script>
 

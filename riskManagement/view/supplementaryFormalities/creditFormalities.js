@@ -97,17 +97,12 @@ function creditFormalitiesInfo() {
 	onLoadPage('id');
 	layui.use([ 'upload', 'form', 'laydate' ], function() {
 		var form = layui.form, upload = layui.upload, laydate = layui.laydate;
-
-		// 表单初始赋值
-		form.val('example', getFormData())
-		form.val('subForm', getSubFormData())
 		// 执行一个laydate实例
 		laydate.render({
 			elem : '#date' // 指定元素
 		});
 		// 监听submit提交
 		form.on('submit(formDemo)', function(data) {
-			delete data.field['file'];
 			var formJson = JSON.stringify(data.field);
 			$.ajax({
 				url : '/ReplenishProcedureImage/addAndUpdateReplenishProcedure.action',
@@ -182,8 +177,6 @@ function creditFormalitiesInfo() {
 }
 
 // 页面加载执行
-var formData = null;
-var formDataSub = null;
 function onLoadPage(name) {
 	var id = getHrefParam(name);
 	$.ajax({
@@ -193,9 +186,12 @@ function onLoadPage(name) {
 		data : {
 			id : id
 		},
-		async : false,
 		success : function(result) {
-			formData = result.data;
+			var formData = result.data;
+			layui.use(['form'], function() {
+				var form = layui.form;
+				form.val('example', getFormData(formData))
+			})
 			$.ajax({
 				url : '/ReplenishProcedureImage/findReplenishProcedureByEntry_number.action',
 				type : 'post',
@@ -203,9 +199,12 @@ function onLoadPage(name) {
 				data : {
 					id : formData.entry_number
 				},
-				async : false,
 				success : function(result) {
-					formDataSub = result.data;
+					var formDataSub = result.data;
+					layui.use(['form'], function() {
+						var form = layui.form;
+						form.val('subForm', getSubFormData(formDataSub))
+					})
 				}
 			});
 		}

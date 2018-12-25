@@ -110,8 +110,6 @@ function documentBorrowing() {
 }
 
 // 详情页面加载执行
-var formData = null;
-
 function onLoadPage(name) {
 	var report_id = getHrefParam(name);
 	$.ajax({    
@@ -121,30 +119,21 @@ function onLoadPage(name) {
 		data : {
 			report_id : report_id
 		},
-		async : false,
 		success : function(result) {
-			formData = result.data;
+			var formData = result.data[0];
+			layui.use([ 'form' ], function() {
+				var form = layui.form;
+				// 表单初始赋值
+				form.val('example', getDocumentFormData(formData))
+			})
 		}
 	});
 }
-
 
 function documentBorrowingInfo() {
 	onLoadPage("report_id");
 	layui.use([ 'form', 'table' ], function() {
 		var form = layui.form, table = layui.table;
-
-		// 表单初始赋值
-
-		form.val('example', {
-			"report_id" : formData[0].report_id, // "name": "value"
-			'status' : formData[0].status,
-			'read_time' : formData.read_time,
-			'read_name' : formData[0].read_name,
-			'return_time' : formData[0].return_time,
-			'archivet_location' : formData[0].archivet_location,
-			'create_name' : formData[0].create_name
-		})
 		// 监听提交
 		form.on('submit(borrowInfoBtn)', function(data) {
 			if (data.field.status == 2) {
@@ -162,9 +151,7 @@ function documentBorrowingInfo() {
 					if (data.code == 1) {
 						// 墨绿深蓝风
 						layerMsgPath('修改成功', 'documentBorrowing.jsp', '')
-					} else if (data.code == 0) {
-						layerClose(data.msg)
-					} else {
+					}else {
 						layerClose(data.msg)
 					}
 

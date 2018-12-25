@@ -100,10 +100,11 @@ function accessMangement() {
 						status : 1
 					});
 				}
-			}
-
-			if (obj.event == 'modify') {
+			} else if (obj.event == 'modify') {
 				window.location.href = 'accessControl.jsp?id=' + data.id;
+			} else if (obj.event == 'revamp') {
+				window.location.href = 'accessMangementRevamp.jsp?id='
+						+ data.id;
 			}
 
 		});
@@ -130,7 +131,7 @@ function accessControl() {
 				return arr;
 			}
 			var arr = objOfPropertyToArr(data.field); // 输出["", ""]
-			//删除pid字符串
+			// 删除pid字符串
 			var accessArr = [];
 			for (var i = 0; i < arr.length; i++) {
 				accessArr.push(arr[i].substring(3, 7));
@@ -154,9 +155,9 @@ function accessControl() {
 
 	})
 }
-var formData = {}
+
 // 延迟赋值
-function formVal() {
+function formVal(formData) {
 	layui.use([ 'form' ], function() {
 		var form = layui.form;
 		// 表单初始赋值
@@ -169,10 +170,11 @@ function onLoadPage(name) {
 	$.post('/popedom/popedomList.action', {
 		id : id
 	}, function(result) {
+		var formData = {};
 		for (var n = 0; n < result.data.length; n++) {
 			formData['pid' + result.data[n].pid] = true
 		}
-		formVal();
+		formVal(formData);
 	})
 }
 function accessMangementAdd() {
@@ -180,20 +182,76 @@ function accessMangementAdd() {
 		var form = layui.form;
 
 		// 监听提交
-
 		form.on('submit(accessAdd)', function(data) {
-			$.ajax({
-				url : '/user/insertUser.action',
-				type : 'post',
-				dataType : 'json',
-				data : data.field,
-				success : function() {
-					// 墨绿深蓝风
-					layerMsgPath('添加成功', 'accessMangement.jsp', '')
-				}
-			})
+			if (data.field.user_pwd === data.field.user_pwd_verify) {
+				$.ajax({
+					url : '/user/insertUser.action',
+					type : 'post',
+					dataType : 'json',
+					data : data.field,
+					success : function() {
+						// 墨绿深蓝风
+						layerMsgPath('添加成功', 'accessMangement.jsp', '')
+					}
+				})
+			} else {
+				layerClose('两次输入的密码不同')
+			}
 
 			return false; // 阻止表单跳转。如果需要表单跳转，去掉这段即可。
 		})
 	})
+}
+function accessMangementRevamp() {
+	onLoadPageRevamp('id');
+	layui.use([ 'form' ], function() {
+		var form = layui.form;
+		// 监听提交
+
+		form.on('submit(accessRevamp)', function(data) {
+			if (data.field.user_pwd === data.field.user_pwd_verify) {
+
+				$.ajax({
+					url : '/user/updateUserById.action',
+					type : 'post',
+					dataType : 'json',
+					data : data.field,
+					success : function() {
+						layerMsgPath('修改成功', 'accessMangement.jsp', '')
+					}
+				})
+
+			} else {
+				layerClose('两次输入的密码不同')
+			}
+
+			return false; // 阻止表单跳转。如果需要表单跳转，去掉这段即可。
+		})
+
+	})
+}
+// 页面加载执行
+function onLoadPageRevamp(name) {
+	var id = getHrefParam(name);
+	$.ajax({
+		type : 'POST',
+		url : '/user/findUserById.action?id=' + id,
+		dataType : 'json',
+		success : function(res) {
+			layui.use([ 'form' ], function() {
+				var form = layui.form;
+				// 表单初始赋值
+				form.val('example', {
+					id: res.id,
+					name : res.name,
+					post : res.post,
+					phone : res.phone,
+					address : res.address,
+					user_name : res.user_name,
+					user_pwd: res.user_pwd,
+					user_pwd_verify: res.user_pwd
+				})
+			})
+		}
+	});
 }

@@ -107,39 +107,10 @@ function documentFiling() {
 
 	});
 }
-// 详情页面加载执行
-
-var formData = null;
-
-function onLoadPage(name) {
-	
-	var report_id = getHrefParam(name);
-	$.ajax({
-		url : '/RecordManageSave/findRecordByRecordId.action',
-		type : 'post',
-		dataType : 'json',
-		data : {
-			report_id : report_id
-		},
-		async : false,
-		success : function(result) {
-			formData = result.data;
-		}
-	});
-}
-
 
 function documentFilingAdd() {
-	onLoadPage("report_id");
 	layui.use([ 'form' ], function() {
 		var form = layui.form;
-
-		// 表单初始赋值
-
-		form.val('example', {
-			"entry_number" : formData.entry_number, // "name": "value"
-			'archivet_location' : formData.archivet_location,
-		})
 		// 监听提交
 		form.on('submit(formDemo)', function(data) {
 			$.ajax({
@@ -150,7 +121,6 @@ function documentFilingAdd() {
 				success : function(data) {
 					if (data.code == 1) {
 						layerMsgPath('修改成功', 'documentFiling.jsp', '')
-					} else {
 					}
 				}
 			})
@@ -164,18 +134,6 @@ function documentFilingInfo() {
 	onLoadPage("report_id");
 	layui.use([ 'form' ], function() {
 		var form = layui.form;
-		// 表单初始赋值
-		form.val('example', {
-			'id' : formData[0].id,
-			'name' : formData[0].name,		// "name": "value"
-			'status' : formData[0].status,		
-			'report_id' : formData[0].report_id,
-			'phone' : formData[0].phone,
-			'archivet_time' : timeStamp2String(formData[0].archivet_time),
-			'cencal_time' : isNaN(formData[0].cencal_time)?'无':timeStamp2String(formData[0].cencal_time),
-			'archivet_location' : formData[0].archivet_location
-		});
-
 		// 修改档案提交事件监听
 		form.on('submit(update1)', function(data) {
 			$.ajax({
@@ -195,14 +153,30 @@ function documentFilingInfo() {
 
 					} else if (data.code == 0) {
 						layer.msg('请选择要修改的内容！');
-					} else {
 					}
-
 				}
 			});
 			return false;
-
 		});
-
 	})
+}
+//详情页面加载执行
+function onLoadPage(name) {
+	var report_id = getHrefParam(name);
+	$.ajax({
+		url : '/RecordManageSave/findRecordByRecordId.action',
+		type : 'post',
+		dataType : 'json',
+		data : {
+			report_id : report_id
+		},
+		success : function(result) {
+			var formData = result.data[0];
+			layui.use([ 'form' ], function() {
+				var form = layui.form;
+				// 表单初始赋值
+				form.val('example', getDocumentFormData(formData))
+			})
+		}
+	});
 }

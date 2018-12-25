@@ -84,7 +84,7 @@
 <script src="carCollection.js"></script>
 <script>
 	$(document).ready(function() {
-		carCollectionInfo();
+		onLoadPage('entry_number');
 	})
 </script>
 

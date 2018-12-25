@@ -19,7 +19,8 @@
 	})
 </script>
 <script type="text/html" id="operation">
-	<a class="layui-btn layui-btn-xs layui-bg-green" lay-event="modify">修改</a>
+	<a class="layui-btn layui-btn-xs layui-bg-green" lay-event="modify">权限</a>
     <a class="layui-btn layui-btn-xs layui-bg-green" lay-event="lock">锁定/解锁</a>
+	<a class="layui-btn layui-btn-xs layui-bg-green" lay-event="revamp">修改</a>
 </script>
 <%@ include file="/riskManagement/templates/footer.jsp"%>

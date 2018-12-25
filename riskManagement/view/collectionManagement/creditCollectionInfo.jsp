@@ -84,7 +84,7 @@
 <script src="creditCollection.js"></script>
 <script>
 	$(document).ready(function() {
-		creditCollectionInfo();
+		onLoadPage('entry_number');
 	})
 </script>
 

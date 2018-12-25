@@ -91,8 +91,6 @@ function uploadContract() {
 	})
 }
 
-var formData = null;
-
 function onLoadPage(name) {
 	var report_id = getHrefParam(name);
 	$.ajax({
@@ -102,28 +100,29 @@ function onLoadPage(name) {
 		data : {
 			entry_number : report_id
 		},
-		async : false,
 		success : function(result) {
-			formData = result.data;
+			var formData = result.data[result.data.length-1];
+			layui.use([ 'form' ], function() {
+				var form = layui.form;
+				// 表单初始赋值
+				form.val('example', {
+					report_id : formData.report_id, // "name": "value"
+					id : formData.id,
+					user_id : formData.user_id,
+					contract_id : formData.contract_id,
+					create_time : timeStamp2String(formData.create_time),
+					update_time : timeStamp2String(formData.update_time),
+					remark : formData.remark
+				})
+			})
 		}
 	});
 }
 
 function uploadContractInfo() {
 	onLoadPage("report_id");
-	layui.use([ 'form', 'upload' ], function() {
-		var form = layui.form, upload = layui.upload;
-		// 表单初始赋值
-		form.val('example', {
-			"report_id" : formData[0].report_id, // "name": "value"
-			'id' : formData[0].id,
-			'user_id' : formData[0].user_id,
-			'contract_id' : formData[0].contract_id,
-			'create_time' : timeStamp2String(formData[0].create_time),
-			'update_time' : timeStamp2String(formData[formData.length-1].update_time),
-			'remark' : formData[0].remark
-		})
-
+	layui.use([ 'upload' ], function() {
+		var upload = layui.upload;
 
 		// 多文件列表示例
 		var demoListView = $('#demoList'), uploadListIns = upload.render({

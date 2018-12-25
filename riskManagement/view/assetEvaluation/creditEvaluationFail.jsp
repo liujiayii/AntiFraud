@@ -11,7 +11,7 @@ q<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="U
 		</div>
 	</div>
 	<form class="layui-form form-main" action="" id="" style="margin-top: 25px;" lay-filter="example">
-		<input type="hidden" name="id">
+		<input type="hidden" name="id"><input type="hidden" name="status">
 		<div class="layui-form-item remark-item">
 			<label class="layui-form-label">备注</label>
 			<div class="layui-input-inline">

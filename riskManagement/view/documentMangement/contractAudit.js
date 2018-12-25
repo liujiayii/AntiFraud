@@ -1,6 +1,5 @@
 // 激活二级导航
 $(document).ready(function() {
-	
 	navActive(6 );
 	secondNavActive('#documentMangement dd', 0)
 });
@@ -8,7 +7,6 @@ $(document).ready(function() {
 function contractAudit() {
 	layui.use([ 'form', 'table' ], function() {
 		var form = layui.form, table = layui.table;
-
 		// 第一个实例
 		table.render({
 			elem : '#realEstateMortgage',
@@ -99,7 +97,6 @@ function contractAudit() {
 	})
 }
 
-var formData = null;
 
 function onLoadPage(name) {
 	var report_id = getHrefParam(name);
@@ -110,9 +107,21 @@ function onLoadPage(name) {
 		data : {
 			entry_number : report_id
 		},
-		async : false,
 		success : function(result) {
-			formData = result.data;
+			var formData = result.data[result.data.length-1];
+			layui.use([ 'form' ], function() {
+				var form = layui.form;
+				// 表单初始赋值
+				form.val('example', {
+					"report_id" : formData.report_id, // "name": "value"
+					'id' : formData.id,
+					'user_id' : formData.user_id,
+					'contract_id' : formData.contract_id,
+					'create_time' : timeStamp2String(formData.create_time),
+					'update_time' : timeStamp2String(formData.update_time),
+					'remark' : formData.remark
+				})
+			})
 		}
 	});
 }
@@ -121,16 +130,6 @@ function contractAuditInfo() {
 	onLoadPage("entry_number");
 	layui.use([ 'form' ], function() {
 		var form = layui.form;
-		// 表单初始赋值
-		form.val('example', {
-			"report_id" : formData[0].report_id, // "name": "value"
-			'id' : formData[0].id,
-			'user_id' : formData[0].user_id,
-			'contract_id' : formData[0].contract_id,
-			'create_time' : timeStamp2String(formData[0].create_time),
-			'update_time' : timeStamp2String(formData[formData.length-1].update_time),
-			'remark' : formData[0].remark
-		})
 		// 监听提交
 		form.on('submit(suc)', function(data) {
 			$.ajax({
@@ -138,11 +137,10 @@ function contractAuditInfo() {
 				type : 'post',
 				dataType : 'json',
 				data : {
-					reportId : formData[0].report_id,
+					reportId : $("[name='report_id']").val(),
 					status : 8,
 					remark : null
 				},
-				async : false,
 				success : function(result) {
 					// 墨绿深蓝风
 					if(result.code === 1){
@@ -160,11 +158,10 @@ function contractAuditInfo() {
 				type : 'post',
 				dataType : 'json',
 				data : {
-					reportId : formData[0].report_id,
+					reportId : $("[name='report_id']").val(),
 					status : 1,
 					remark : $('[name="remark"]').val()
 				},
-				async : false,
 				success : function(result) {
 					// 墨绿深蓝风
 					layerMsgPath('已拒绝', 'contractAudit.jsp', '');

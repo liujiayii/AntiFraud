@@ -105,8 +105,6 @@ function housingEvaluation() {
 
 }
 
-var formData = null;
-var formImgUrl = null;
 // 页面加载执行
 function onLoadPage(name) {
 	var id = getHrefParam(name);
@@ -117,18 +115,25 @@ function onLoadPage(name) {
 		data : {
 			id : id
 		},
-		async : false,
 		success : function(result) {
-			formData = result.data;
+			var formData = result.data;
+			layui.use([ 'form' ], function() {
+				var form = layui.form;
+				// 表单初始赋值
+				form.val('example', getFormData(formData))
+			})
+			//监听审核
+			if (formData.status != null) {
+				layerNOPath();
+			}
 			$.ajax({
 				url : '/photo/queryImage.action',
 				dataType : 'json',
 				data : {
 					report_id : formData.entry_number
 				},
-				async : false,
 				success : function(result) {
-					formImgUrl = result;
+					businessImgLayer(result);
 				}
 			});
 		}
@@ -139,10 +144,6 @@ function housingEvaluationInfo() {
 	onLoadPage("id");
 	layui.use([ 'form' ], function() {
 		var form = layui.form;
-
-		// 表单初始赋值
-		form.val('example', getFormData())
-
 		// 监听提交
 		form.on('submit(suc)', function(data) {
 
@@ -151,8 +152,8 @@ function housingEvaluationInfo() {
 				type : 'post',
 				dataType : 'json',
 				data : {
-					id: formData.id,
-					entry_number : formData.entry_number,
+					id : data.field.id,
+					entry_number : data.field.entry_number,
 					status : 2
 				},
 				success : function(result) {
@@ -162,21 +163,11 @@ function housingEvaluationInfo() {
 			});
 			return false;
 		});
-
 		form.on('submit(fail)', function(data) {
 			// 墨绿深蓝风
-			layerMsgPath('请填写备注', 'housingEvaluationFail.jsp?id=', formData.id)		
+			layerMsgPath('请填写备注', 'housingEvaluationFail.jsp?id=', $("[name='id']").val())		
 			return false;
-
 		});
-		// 监听通过
-		if (formData.status > 1) {
-			$(".page-but button").attr('lay-filter', '');
-			$(".page-but button").click(function() {
-				// 墨绿深蓝风
-				layerNOPath();
-			})
-		}
 	})
 }
 
@@ -185,16 +176,6 @@ function housingEvaluationFail() {
 	onLoadPage("id");
 	layui.use([ 'form' ], function() {
 		var form = layui.form;
-		// 表单初始赋值
-		form.val('example', {// "name": "value"
-			'id' : formData.id,
-			'remark' : formData.remark,
-			'status' : formData.status
-		})
-		// 监听通过
-		if (formData.status === 1) {
-			layerNOPath();
-		}
 		// 监听提交
 		form.on('submit(Failform)', function(data) {
 			data.field['status'] = 1;

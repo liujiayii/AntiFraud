@@ -52,8 +52,6 @@ function housingMortgage() {
 						return "<span class='failed'>已保存</span>"
 					} else if (d.type == '1') {
 						return "<span class='pass'>已提交</span>"
-					} else if (d.type == '2') {
-						return "<span class='unpass'>未查看</span>"
 					}
 				}
 			}, {
@@ -105,13 +103,20 @@ function housingMortgageInfo() {
 	onLoadPage('id');
 	layui.use([ 'form'], function() {
 		var form = layui.form;
-
-		// 表单初始赋值
-		form.val('example', getFormData())
+		form.on('submit(sub)', function(data) {
+			$.ajax({
+				url : '/HousePropertyMortgage/submitDeclarationH.action',
+				dataType : 'json',
+				data : data.field,
+				success : function(result) {
+					layerMsgPath('已提交','housingMortgage.jsp','')
+				}
+			});
+		
+		})
 	})
 }
-var formData = null;
-var formImgUrl = null;
+
 // 页面加载执行
 function onLoadPage(name) {
 	var id = getHrefParam(name);
@@ -122,18 +127,27 @@ function onLoadPage(name) {
 		data : {
 			id : id
 		},
-		async : false,
 		success : function(result) {
-			formData = result.data;
+			var formData = result.data;
+			layui.use([ 'form'], function() {
+				var form = layui.form;
+				// 表单初始赋值
+				form.val('example', getFormData(formData))
+			})
+			//监听审核
+			if(formData.type != 0){
+				$('select').attr('disabled',true)
+				$('input').attr('disabled',true)
+				layerNOPath();
+			}
 			$.ajax({
 				url : '/photo/queryImage.action',
 				dataType : 'json',
 				data : {
 					report_id : formData.entry_number
 				},
-				async : false,
 				success : function(result) {
-					formImgUrl = result;
+					businessImgLayer(result);
 				}
 			});
 		}
