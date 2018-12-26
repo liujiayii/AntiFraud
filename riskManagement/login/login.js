@@ -3,8 +3,11 @@ layui.use([ 'form' ], function() { // 如果只加载一个模块，可以不填
 
 	// 提交按钮
 	form.on('submit(sub)', function(data) {
-		//login_onclick();
-		submit();
+		if ($("[name='username']").attr("id") == "#UserNameOut") {
+			submit();
+		}
+		login_onclick();
+		
 		return false; // 阻止表单跳转。如果需要表单跳转，去掉这段即可。
 	})
 })
@@ -14,6 +17,18 @@ $(document).keypress(function(e) {
 		$("#loginBtn").click(); // login_btn登录按钮的id
 	}
 });
+
+// 验证U盾插入状态
+function isCheck(isIn) {
+	$.get(
+		'/toLogin.action'
+		,{isIn : isIn}
+		,function() {
+			window.location.reload();
+		}
+	);
+}
+
 // 提交表单
 function submit() {
 	$.ajax({
@@ -44,6 +59,13 @@ function submit() {
 
 var bConnect = 0;
 function load() {
+	
+	//测试开始
+	
+	
+	//测试结束
+	
+	
 	// 如果是IE10及以下浏览器，则跳过不处理
 	if (navigator.userAgent.indexOf("MSIE") > 0 && !navigator.userAgent.indexOf("opera") > -1)
 		return;
@@ -56,13 +78,22 @@ function load() {
 		// 在使用事件插拨时，注意，一定不要关掉Sockey，否则无法监测事件插拨
 		s_pnp.Socket_UK.onmessage = function got_packet(Msg) {
 			var PnpData = JSON.parse(Msg.data);
+			
 			if (PnpData.type == "PnpEvent")// 如果是插拨事件处理消息
 			{
 				if (PnpData.IsIn) {
-					layer.msg("UKEY已被插入，被插入的锁的路径是：" + PnpData.DevicePath, function() {
+					//$("#userNameWrap").hide();
+					//$("#userNameWrap").attr("type","hidden");
+					layer.msg("UKEY已被插入，被插入的锁的路径是：" + PnpData.DevicePath, function() {						
+						console.log("插入"+PnpData.IsIn);
+						isCheck(PnpData.IsIn);
 					})
 				} else {
+					//$("#userNameWrap").show();
+					//$("#userNameWrap").attr("type","text");
 					layer.msg("UKEY已被拨出，被拨出的锁的路径是：" + PnpData.DevicePath, function() {
+						console.log(PnpData.IsIn);
+						isCheck(PnpData.IsIn);
 					})
 				}
 			}
@@ -210,7 +241,7 @@ function login_onclick() {
 					s_simnew1.Socket_UK.close();
 					return false;
 				}
-				frmlogin.UserName.value = UK_Data.return_value;// 获得返回的UK地址1的字符串
+				frmlogin.UserNameIn.value = UK_Data.return_value;// 获得返回的UK地址1的字符串
 
 				// 获到设置在锁中的用户密码,
 				// 先从地址20读取字符串的长度,使用默认的读密码"FFFFFFFF","FFFFFFFF"

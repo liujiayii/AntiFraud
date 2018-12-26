@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 
@@ -22,15 +23,23 @@
 	<div class="login-main">
 		<form class="layui-form login-form" lay-filter="login-form" name="frmlogin">
 			<header class="login-elip">WELCOME</header>
-			<div class="layui-input-inline login-input-inline">
-				<i class="layui-icon layui-icon-username"></i>
-				<input type="text" name="username" id="UserName" lay-verify="required" placeholder="请输入账号" class="layui-input login-input" lay-verType="tips"> 
-			</div>
-			
+			<c:if test="${isCheck == 1}">
+				<div class="layui-input-inline login-input-inline" id="userNameWrap" style="display:none">
+					<i class="layui-icon layui-icon-username"></i>
+					<input type="hidden" name="username" id="UserNameIn" lay-verify="" placeholder="请输入账号" class="layui-input login-input" lay-verType="tips"> 
+				</div>
+			</c:if>
+			<c:if test="${isCheck == 0}">
+				<div class="layui-input-inline login-input-inline" id="userNameWrap">
+					<i class="layui-icon layui-icon-username"></i>
+					<input type="text" name="username" id="UserNameOut"  lay-verify="required" placeholder="请输入账号" class="layui-input login-input" lay-verType="tips"> 
+				</div>
+			</c:if>
 			<div class="layui-input-inline login-input-inline">
 				<i class="layui-icon layui-icon-password"></i>
 				<input type="password" name="password" id="Password" lay-verify="required" placeholder="请输入密码" maxlength="16" autocomplete="new-password" class="layui-input login-input" lay-verType="tips">
 			</div>
+			
 			<div class="layui-input-inline login-input-inline">
 				<!-- <input type="button" class="login-button layui-bg-blue" value="登录" id="loginBtn" lay-submit lay-filter="sub" > -->
 				<input type="button" class="login-button layui-bg-blue" value="登录" id="loginBtn" lay-submit lay-filter="sub" > 
