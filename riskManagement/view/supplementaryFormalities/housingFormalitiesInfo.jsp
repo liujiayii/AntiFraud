@@ -241,6 +241,12 @@
 			</div>
 		</div>
 		<div class="layui-form-item">
+			<label class="layui-form-label">审批额度</label>
+			<div class="layui-input-inline">
+				<input type="text" name="approval_amount" autocomplete="off" class="layui-input" value="" disabled>
+			</div>
+		</div>
+		<div class="layui-form-item">
 			<label class="layui-form-label"><span class="required">*</span>是否本月开户</label>
 			<div class="layui-input-inline">
 				<select name="account_opening_time" lay-verify="required" disabled>

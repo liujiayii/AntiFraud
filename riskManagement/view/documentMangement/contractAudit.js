@@ -1,6 +1,6 @@
 // 激活二级导航
 $(document).ready(function() {
-	navActive(6 );
+	navActive(6);
 	secondNavActive('#documentMangement dd', 0)
 });
 
@@ -89,14 +89,14 @@ function contractAudit() {
 		table.on('tool(realEstateMortgage)', function(obj) {
 			var data = obj.data;
 			if (obj.event == 'see') {
-				window.location.href = "contractAuditInfo.jsp?entry_number=" + data.entry_number;
+				window.location.href = "contractAuditInfo.jsp?entry_number="
+						+ data.entry_number;
 
 			}
 		});
 
 	})
 }
-
 
 function onLoadPage(name) {
 	var report_id = getHrefParam(name);
@@ -108,20 +108,25 @@ function onLoadPage(name) {
 			entry_number : report_id
 		},
 		success : function(result) {
-			var formData = result.data[result.data.length-1];
+			var formData = result.data;
 			layui.use([ 'form' ], function() {
 				var form = layui.form;
 				// 表单初始赋值
 				form.val('example', {
-					"report_id" : formData.report_id, // "name": "value"
-					'id' : formData.id,
-					'user_id' : formData.user_id,
-					'contract_id' : formData.contract_id,
-					'create_time' : timeStamp2String(formData.create_time),
-					'update_time' : timeStamp2String(formData.update_time),
-					'remark' : formData.remark
+					"report_id" : formData[0].report_id, // "name": "value"
+					'id' : formData[0].id,
+					'user_id' : formData[0].user_id,
+					'contract_id' : formData[0].contract_id,
+					'create_time' : timeStamp2String(formData[0].create_time),
+					'update_time' : formData[0].update_time ? timeStamp2String(formData[0].update_time) : timeStamp2String(formData[0].create_time),
+					'remark' : formData[0].remark
 				})
 			})
+			console.log(formData.length);
+			for (var i = 0; i < formData.length; i++) {
+				$('.imgList').append($($('.imgBox')[0]).clone());
+				$($('.imgBox img')[i]).attr('src', formData[i].img_url);
+			}
 		}
 	});
 }
@@ -143,12 +148,12 @@ function contractAuditInfo() {
 				},
 				success : function(result) {
 					// 墨绿深蓝风
-					if(result.code === 1){
+					if (result.code === 1) {
 						layerMsgPath(result.msg, 'contractAudit.jsp', '');
-					}else{
+					} else {
 						// 墨绿深蓝风
 						layerClose(result.msg)
-					}					
+					}
 				}
 			});
 		})

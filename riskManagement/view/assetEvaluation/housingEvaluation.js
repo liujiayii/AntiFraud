@@ -146,20 +146,25 @@ function housingEvaluationInfo() {
 		var form = layui.form;
 		// 监听提交
 		form.on('submit(suc)', function(data) {
-
-			$.ajax({
-				url : '/HousePropertyMortgage/ResultHousePropertyMortgage.action',
-				type : 'post',
-				dataType : 'json',
-				data : {
-					id : data.field.id,
-					entry_number : data.field.entry_number,
-					status : 2
-				},
-				success : function(result) {
-					// 墨绿深蓝风
-					layerMsgPath('已通过', 'housingEvaluation.jsp', '');
-				}
+			// prompt层
+			layer.prompt({
+				title : '输入审批额度，并确认'
+			}, function(pass, index) {
+				$.ajax({
+					url : '/HousePropertyMortgage/ResultHousePropertyMortgage.action',
+					type : 'post',
+					dataType : 'json',
+					data : {
+						id : data.field.id,
+						entry_number : data.field.entry_number,
+						status : 2,
+						approval_amount: pass
+					},
+					success : function(result) {
+						layerMsgPath('已通过', 'carEvaluation.jsp', '');
+					}
+				})
+				layer.close(index);
 			});
 			return false;
 		});

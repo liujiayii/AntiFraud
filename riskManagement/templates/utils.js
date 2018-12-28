@@ -139,7 +139,8 @@ function getFormData(formData) {// 业务信息表
 		account_opening_time : formData.account_opening_time,
 		purpose_of_loan : formData.purpose_of_loan,
 		remark: formData.remark,
-		status : formData.status
+		status : formData.status,
+		approval_amount : formData.approval_amount,
 	}
 	return obj;
 }

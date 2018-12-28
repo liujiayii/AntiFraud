@@ -10,10 +10,14 @@ function carEvaluation() {
 		// 第一个实例
 		table.render({
 			id : 'testReload',
-			page : {theme : '#405467'},
+			page : {
+				theme : '#405467'
+			},
 			even : true,
 			skin : 'line', // 行边框风格
-			response : { statusCode : 1 },// 规定成功的状态码，默认：0
+			response : {
+				statusCode : 1
+			},// 规定成功的状态码，默认：0
 			elem : '#realEstateMortgage',
 			url : '/VehicleMortgage/findAllVehicleMortgage.action',
 			cols : [ [ // 表头
@@ -116,7 +120,7 @@ function onLoadPage(name) {
 				// 表单初始赋值
 				form.val('example', getFormData(formData))
 			})
-			//监听审核
+			// 监听审核
 			if (formData.status != null) {
 				layerNOPath();
 			}
@@ -142,18 +146,25 @@ function carEvaluationInfo() {
 
 		// 监听提交
 		form.on('submit(suc)', function(data) {
-			$.ajax({
-				url : '/VehicleMortgage/ResultVehicleMortgage.action',
-				type : 'post',
-				dataType : 'json',
-				data : {
-					id : data.field.id,
-					entry_number : data.field.entry_number,
-					status : 2
-				},
-				success : function(result) {
-					layerMsgPath('已通过', 'carEvaluation.jsp', '');
-				}
+			// prompt层
+			layer.prompt({
+				title : '输入审批额度，并确认'
+			}, function(pass, index) {
+				$.ajax({
+					url : '/VehicleMortgage/ResultVehicleMortgage.action',
+					type : 'post',
+					dataType : 'json',
+					data : {
+						id : data.field.id,
+						entry_number : data.field.entry_number,
+						status : 2,
+						approval_amount: pass
+					},
+					success : function(result) {
+						layerMsgPath('已通过', 'carEvaluation.jsp', '');
+					}
+				})
+				layer.close(index);
 			});
 			return false;
 		});

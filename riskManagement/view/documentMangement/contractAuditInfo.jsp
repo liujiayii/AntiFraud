@@ -67,11 +67,7 @@
 
 <script>
 	$(document).ready(function() {
-		contractAuditInfo();
-		for (var i = 0; i < formData.length; i++) {
-			$('.imgList').append($($('.imgBox')[0]).clone());
-			$($('.imgBox img')[i]).attr('src', formData[i].img_url);			
-		}		
+		contractAuditInfo();		
 	})
 </script>
 <%@ include file="/riskManagement/templates/footer.jsp"%>

@@ -239,6 +239,12 @@
 			</div>
 		</div>
 		<div class="layui-form-item">
+			<label class="layui-form-label">审批额度</label>
+			<div class="layui-input-inline">
+				<input type="text" name="approval_amount" autocomplete="off" class="layui-input" value="" disabled>
+			</div>
+		</div>
+		<div class="layui-form-item">
 			<label class="layui-form-label">借款用途</label>
 			<div class="layui-input-inline">
 				<input type="text" name="purpose_of_loan" autocomplete="off" class="layui-input" value="" disabled>
