@@ -1,0 +1,247 @@
+// 激活垂直导航栏
+$(document).ready(function() {
+	navActive(10);
+	secondNavActive('#accessMangement dd', 0)
+});
+function accessMangement() {
+	layui.use([ 'table' ], function() {
+		var table = layui.table;
+		// 第一个实例
+		table.render({
+			elem : '#realEstateMortgage',
+			url : '/user/findAllUser.action',
+			page : true,
+			id : 'testReload',
+			even : true,
+			skin : 'line', // 行边框风格
+			response : {
+				statusCode : 1
+			// 规定成功的状态码，默认：0
+			},
+			cols : [ [ // 表头
+			{
+				field : 'name',
+				title : '姓名'
+			}, {
+				field : 'phone',
+				title : '电话'
+			}, {
+				field : 'post',
+				title : '职位'
+			}, {
+				field : 'status',
+				title : '状态',
+				templet : function(d) {
+					if (d.status == '1') {
+						return "<span class='pass'>正常</span>"
+					} else if (d.status == '2') {
+						return "<span class='failed'>锁定</span>"
+					}
+				}
+			}, {
+				field : 'operation',
+				title : '操作',
+				toolbar : '#operation'
+			}, ] ]
+		});
+		// 搜索
+		var active = {
+			reload : function() {
+				// 执行重载
+				table.reload('testReload', {
+					url : '/user/findUserByPhone.action',
+					page : {
+						curr : 1
+					// 重新从第 1 页开始
+					},
+					where : {
+						phone : $('#demoReload').val()
+					},
+					done : function() {
+					}
+				});
+			}
+		};
+
+		$('#demoReload').on('input', function() {
+			var type = $(this).data('type');
+			active[type] ? active[type].call(this) : '';
+		});
+		// 监听行工具事件
+		function changeStatus(id, status) {
+			$.ajax({
+				url : '/user/updateUserStatus.action',
+				type : 'post',
+				dataType : 'text',
+				data : {
+					id : id,
+					status : status
+				},
+				success : function() {
+				}
+			})
+
+		}
+
+		table.on('tool(realEstateMortgage)', function(obj) {
+			var data = obj.data;
+			var url = '';
+
+			if (obj.event == 'lock') {
+				if (data.status === 1) {
+					changeStatus(data.id, data.status);
+					obj.update({
+						status : 2
+					});
+
+				} else if (data.status === 2) {
+					changeStatus(data.id, data.status);
+					obj.update({
+						status : 1
+					});
+				}
+			} else if (obj.event == 'modify') {
+				window.location.href = 'accessControl.jsp?id=' + data.id;
+			} else if (obj.event == 'revamp') {
+				window.location.href = 'accessMangementRevamp.jsp?id=' + data.id;
+			}
+
+		});
+
+	});
+}
+
+function accessControl() {
+	onLoadPage("id");
+	layui.use([ 'form', 'layer' ], function() {
+		var form = layui.form, layer = layui.layer;
+		// 监听提交
+
+		form.on('submit(control)', function(data) {
+
+			// 将Object的属性输出成Array
+			function objOfPropertyToArr(object) {
+				var arr = [];
+				var i = 0;
+				for ( var item in object) {
+					arr[i] = item;
+					i++;
+				}
+				return arr;
+			}
+			var arr = objOfPropertyToArr(data.field); // 输出["", ""]
+			// 删除pid字符串
+			var accessArr = [];
+			for (var i = 0; i < arr.length; i++) {
+				accessArr.push(arr[i].substring(3, 7));
+			}
+			$.ajax({
+				url : '/popedom/updatePopedom.action',
+				type : 'post',
+				data : {
+					id : getHrefParam("id"),
+					'popedoms' : accessArr
+				},
+				traditional : true, // 如果要传数组，这行一定要加！用传统的方式来序列化数据
+				success : function() {
+					// 墨绿深蓝风
+					layerMsgPath('修改成功', 'accessMangement.jsp', '')
+				}
+			})
+
+			return false; // 阻止表单跳转。如果需要表单跳转，去掉这段即可。
+		});
+
+	})
+}
+var formData = {}
+// 延迟赋值
+function formVal() {
+	layui.use([ 'form' ], function() {
+		var form = layui.form;
+		// 表单初始赋值
+		form.val("formTest", formData)
+	})
+}
+// 页面加载执行
+function onLoadPage(name) {
+	var id = getHrefParam(name);
+	$.post('/popedom/popedomList.action', {
+		id : id
+	}, function(result) {
+		for (var n = 0; n < result.data.length; n++) {
+			formData['pid' + result.data[n].pid] = true
+		}
+		formVal();
+	})
+}
+function accessMangementAdd() {
+	layui.use([ 'form' ], function() {
+		var form = layui.form;
+
+		// 监听提交
+		form.on('submit(accessAdd)', function(data) {
+			if (data.field.user_pwd === data.field.user_pwd_verify) {
+				$.ajax({
+					url : '/user/insertUser.action',
+					type : 'post',
+					dataType : 'json',
+					data : data.field,
+					success : function() {
+						// 墨绿深蓝风
+						layerMsgPath('添加成功', 'accessMangement.jsp', '')
+					}
+				})
+			} else {
+				layerClose('两次输入的密码不同')
+			}
+
+			return false; // 阻止表单跳转。如果需要表单跳转，去掉这段即可。
+		})
+	})
+}
+function accessMangementRevamp() {
+	onLoadPageRevamp('id');
+	layui.use([ 'form' ], function() {
+		var form = layui.form;
+		// 监听提交
+
+		form.on('submit(accessRevamp)', function(data) {
+			if (data.field.user_pwd === data.field.user_pwd_verify) {
+				/*
+				 * $.ajax({ url : '/user/insertUser.action', type : 'post',
+				 * dataType : 'json', data : data.field, success : function() { //
+				 * 墨绿深蓝风 layerMsgPath('修改成功', 'accessMangement.jsp', '') } })
+				 */
+			} else {
+				layerClose('两次输入的密码不同')
+			}
+
+			return false; // 阻止表单跳转。如果需要表单跳转，去掉这段即可。
+		})
+
+	})
+}
+// 页面加载执行
+function onLoadPageRevamp(name) {
+	var id = getHrefParam(name);
+	$.ajax({
+		type : 'POST',
+		url : '/user/findUserById.action?id=' + id,
+		dataType : 'json',
+		success : function(res) {
+			layui.use([ 'form' ], function() {
+				var form = layui.form;
+				// 表单初始赋值
+				form.val('example', {
+					id: res.id,
+					name : res.name,
+					p_id : res.p_id,
+					phone : res.phone,
+					address : res.address,
+					user_name : res.user_name
+				})
+			})
+		}
+	});
+}

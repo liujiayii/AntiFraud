@@ -1,0 +1,32 @@
+package com.antifraud.dao;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
+import com.antifraud.entity.Log;
+
+public interface LogDao {
+	
+	/**
+	 * 
+	  * @Title: saveLog
+	  * @description 保存日志
+	  * @param @param log 
+	  * @return void    
+	  * @author caoyaru
+	  * @createDate 2018年12月10日-下午4:21:58
+	 */
+	public void saveLog(Log log) ;
+	
+	/**
+	 * 
+	  * @Title: findById
+	  * @description 查询全部
+	  * @param @return 
+	  * @return Log    
+	  * @author caoyaru
+	  * @createDate 2018年12月11日-上午11:43:56
+	 */
+	public List<Log> findById(@Param("id")Long id);
+}

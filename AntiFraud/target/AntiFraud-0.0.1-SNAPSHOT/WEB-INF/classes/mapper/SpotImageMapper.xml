@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace ="com.antifraud.dao.SpotImageDao">
+
+	<!-- 增加的方法 -->
+	<insert id ="insertSpotlmage"  parameterType="com.antifraud.entity.Spot_image">
+	
+	<selectKey keyProperty="id" resultType="java.lang.Long" order="AFTER">
+	select last_insert_id()
+	</selectKey>
+	insert into t_spot_image(		
+		report_id,
+		img_url,
+		img_format,
+		create_time,
+		update_time
+	)values(		
+		#{report_id},
+		#{img_url},
+		#{img_format},		
+		#{create_time},
+		#{update_time}		
+	)
+	</insert>
+	
+	 <!-- 根据报report_id查询实地图片表 -->
+	 <select id="findSpotImageByPid" parameterType="String" resultType = "com.antifraud.entity.Spot_image">
+		select *		
+		from
+		 t_spot_image
+		where report_id = #{report_id}
+	</select> 
+    <select id="findSpotImageByPidCount"  resultType = "integer">
+		select count(*)		
+		from
+		 t_spot_image
+		where report_id = #{report_id}
+	</select> 
+	 <!-- 根据id修改实地图片表 -->
+	<update id="updateSpotImageByid" parameterType="com.antifraud.entity.Spot_image">
+	 update 
+	 t_spot_image 
+	 SET 	 
+	 pid = #{pid},	 
+	 img_url=#{img_url},	 
+	 img_format =#{img_format},	  
+	 create_time=#{create_time},	 
+	 update_time=#{update_time}
+	 where id =#{id}
+	</update>
+	
+	<!-- 根据id查询实地图片表 -->
+	 <select id="findSpotImageByid" parameterType="Long" resultType = "com.antifraud.entity.Spot_image">
+		select *		
+		from
+		 t_spot_image 
+		where id = #{id}
+	</select> 
+		
+	 <!-- 根据report_id删除实地图片表的方法 -->
+	<delete id="deleteSpotImageByreport_id" parameterType="String">
+	 DELETE  
+	 FROM t_spot_image 
+	 where report_id = #{report_id}
+	</delete>
+	<!-- 根据ID删除实地图片表的方法 -->
+	<delete id="deleteSpotImageByid" parameterType="Long">
+	 DELETE  
+	 FROM t_spot_image  
+	 where id = #{id}
+	</delete>
+	
+
+</mapper>

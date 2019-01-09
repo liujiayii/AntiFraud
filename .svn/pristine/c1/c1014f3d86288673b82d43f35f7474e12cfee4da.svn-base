@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.antifraud.dao.UserDao">
+
+	<!-- 添加用户 -->
+	<!-- int insertUser(User user); -->
+	<insert id="insertUser" parameterType="com.antifraud.entity.User">
+		insert into 
+			t_user(
+				id,
+				name,
+				phone,
+				post,
+				user_name,
+				user_pwd,
+				status,
+				p_id,
+				address,
+				img_url,
+				key_word,
+				create_time,
+				update_time
+			)values(
+				null,
+				#{name},
+				#{phone},
+				#{post},
+				#{user_name},
+				#{user_pwd},
+				#{status},
+				#{p_id},
+				#{address},
+				#{img_url},
+				#{key_word},
+				#{create_time},
+				#{update_time}
+			)
+			
+	</insert>
+	
+	<!-- 通过用户名查找用户 -->
+	<!-- User findUserByUserName(String user_name); -->
+	<select id="findUserByUserName" resultType="com.antifraud.entity.User">
+		select 
+			*
+		from 
+			t_user
+		where
+			user_name=#{user_name}	
+	</select>
+		
+	<!-- 登录 查询用户 -->
+	<select id="loginUser" resultType="com.antifraud.entity.User">
+		select * from t_user where user_name=#{user_name} and user_pwd=#{password}
+	</select>
+	<!-- 通过id查询用户 -->
+	<select id="findUserById" resultType="com.antifraud.entity.User">
+		select * from t_user where id=#{id}
+	</select>
+	<!-- 修改  手机号码，职务-->
+	<update id="updateUser" parameterType="com.antifraud.entity.User">
+		update t_user
+		<set>
+			<if test="phone!='' and phone!=null">phone=#{phone},</if>
+			<if test="post!='' and post!=null">post=#{post},</if>	
+		</set>
+		where id=#{id}
+	</update>
+	<!-- 根据用户名查询用户信息  -->
+	<select id="findUserByname" parameterType="String"  resultType="com.antifraud.entity.User" >
+		select * from t_user where user_name=#{user_name}
+	</select>
+	<!-- 根据用户名查询角色 -->
+	<select id="findByUser" resultType="com.antifraud.entity.User" >
+		select * 
+		from t_user
+		where id=${id} 
+	<!-- 根据用户id查询角色 -->
+	</select>
+	<!-- 查询全部 -->
+	<select id="findAll" resultType="com.antifraud.entity.User">
+		select * from t_user
+	</select>
+	
+	<!--  通过电话号码查询用户,用于电话搜索  -->
+	<!--  List<User> findUserByPhone(@Param("phone")String phone,@Param("phone")Integer page,@Param("limit")Integer limit); -->
+	<select id="findUserByPhone" resultType="com.antifraud.entity.User">
+		select * from t_user where phone like #{phone} limit #{page},#{limit}
+	</select>
+	
+	
+	<!-- 锁定/解锁用户 -->
+	<!-- int updateUserStatus(Long id ,int status); -->
+	<update id="updateUserStatus">
+		update t_user
+			set status=#{status}
+		where
+			id=#{id}
+	</update>
+	
+	<update id="saveImage">
+		update t_user
+			set img_url=#{address}
+		where
+			id=#{id}
+	</update>
+	
+	<select id="findaddressById" resultType="java.lang.String">
+		select img_url
+		from t_user
+		where id=#{userid}
+	</select>
+	
+	
+	<!-- 分页查询用户信息 -->
+	<!-- List<User> findUserLimit(@Param("page")Integer page,@Param("limit")Integer limit); -->
+	<select id="findUserLimit" resultType="com.antifraud.entity.User">
+		select * from t_user limit #{page},#{limit}
+	</select>
+	
+	
+	<!-- 符合电话查询条件的信息的条数 -->
+	<!-- List<User> findPhoneCount(String phones); -->
+	<select id="findPhoneCount" resultType="com.antifraud.entity.User">
+		select * from t_user where phone like #{phone}
+	</select>
+	
+</mapper>

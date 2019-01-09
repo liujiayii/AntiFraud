@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.antifraud.dao.SpotRecordDao">
+
+	<!-- 增加的方法 -->
+	<insert id="insertSpotRecord" parameterType="com.antifraud.entity.SpotRecord">
+		insert into t_spot_record(
+		id,		 
+	    tid,   
+	    sid,  
+	    trid,
+		report_id,
+		user_id,
+		spot_time,
+		address,
+		remark,
+		create_time,
+		update_time
+		)values(
+		#{id},
+		#{tid},
+		#{sid},
+		#{trid},
+		#{report_id},
+		#{user_id},
+		#{spot_time},
+		#{address},
+		#{remark},
+		#{create_time},
+		#{update_time}
+		)
+	</insert>
+
+	<!-- 修改方法 -->
+	<update id="updateSpotRecordById" parameterType="com.antifraud.entity.SpotRecord">
+		update t_spot_record SET
+		tid = #{tid},
+	    sid  = #{sid},
+	    trid = #{trid},
+		report_id = #{report_id},
+		user_id=#{user_id},
+		spot_time =#{spot_time},
+		address=#{address},
+		remark=#{remark},
+		create_time=#{create_time},
+		update_time=#{update_time}
+		where id =#{id}
+	</update>
+	<!-- 根据主键删除 -->
+	<delete id="deleteSpotRecordById" parameterType="com.antifraud.entity.SpotRecord">
+		DELETE
+		FROM t_spot_record
+		where id = #{id}
+	</delete>
+	<!-- 根据实地人员id查询实地记录 -->
+	<select id="findSpotRecordByUserId"
+		resultType="com.antifraud.entity.SpotRecord">
+		select *
+		from
+		t_spot_record
+		where user_id = #{user_id} limit #{star},#{limit}
+	</select>
+	<select id="findSpotRecordByUserIdCount" 
+		resultType="integer">
+		select count(*)
+		from
+		t_spot_record
+		where user_id = #{user_id}
+	</select>
+
+	<!-- 根据报单编号分页查询实地记录 -->
+	<select id="findSpotRecordByReportId"
+		resultType="com.antifraud.entity.SpotRecord">
+		select *
+		from
+		t_spot_record
+		where report_id = #{report_id} limit #{star},#{limit}
+	</select>
+	<select id="findSpotRecordByReportIdCount"
+		resultType="integer">
+		select Count(*)
+		from
+		t_spot_record
+		where report_id = #{report_id}
+	</select>
+
+	<!-- 分页查询所有实地记录 -->
+	<select id="findAllSpotRecord" resultType="com.antifraud.entity.SpotRecord">
+		select *
+		from
+		t_spot_record limit #{beginPageIndex},#{endPageIndex}
+	</select>
+
+
+	<!-- 查询总记录数 -->
+	<select id="findSpotRecordCount" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		FROM
+		t_spot_record
+	</select>
+	
+	<!-- 根据状态分页查询信用贷款表 -->
+	<select id="fiandFiduciaryLoanByStatus" resultType="com.antifraud.entity.HousePropertyMortgage">
+	 SELECT *
+	 FROM t_fiduciary_loan 
+	 WHERE  management = #{management} AND `status` IN (#{status1},#{status2}) or risk_management = #{risk_management} AND `status` IN (#{status1},#{status2})
+	 LIMIT ${star},${limit}
+	</select>
+	<select id="fiandFiduciaryLoanByStatusCount" resultType="integer">
+	 SELECT count(*)
+	 FROM t_fiduciary_loan 
+	 WHERE  management = #{management} AND `status` IN (#{status1},#{status2}) or risk_management = #{risk_management} AND `status` IN (#{status1},#{status2})
+	</select>
+	<!-- 根据状态分页查询房屋贷款表 -->
+	<select id="fiandHousePropertyMortgageByStatus" resultType="com.antifraud.entity.HousePropertyMortgage">
+		SELECT *
+		FROM t_house_property_mortgage
+		 WHERE  management = #{management} AND `status` IN (#{status1},#{status2}) or risk_management = #{risk_management} AND `status` IN (#{status1},#{status2})
+		LIMIT ${star},${limit}
+	</select>
+	<select id="fiandHousePropertyMortgageByStatusCount" resultType="integer">
+		SELECT count(*)
+		FROM t_house_property_mortgage
+		WHERE  management = #{management} AND `status` IN (#{status1},#{status2}) or risk_management = #{risk_management} AND `status` IN (#{status1},#{status2})
+	</select>
+	
+	<!-- 根据报单状态查询车辆贷款表 -->
+	<select id="fiandVehicleMortgageByStatus" resultType="com.antifraud.entity.VehicleMortgage">
+	 SELECT *
+	 FROM t_vehicle_mortgage 
+	  WHERE  management = #{management} AND `status` IN (#{status1},#{status2}) or risk_management = #{risk_management} AND `status` IN (#{status1},#{status2})
+	 LIMIT ${star},${limit}
+	</select>
+	<select id="fiandVehicleMortgageByStatusCount" resultType="integer">
+	 SELECT count(*)
+	 FROM t_vehicle_mortgage 
+	 WHERE  management = #{management} AND `status` IN (#{status1},#{status2}) or risk_management = #{risk_management} AND `status` IN (#{status1},#{status2})
+	</select>
+
+</mapper>

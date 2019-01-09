@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+  
+<mapper namespace="com.antifraud.dao.RecordManageBorrowDao">
+
+<!-- 通过报单编号借阅 -->
+  <update id="borrowRecord" parameterType="com.antifraud.entity.RecordManageBorrow">
+      UPDATE t_record_manage_borrow a,t_house_property_mortgage b,t_vehicle_mortgage c,t_fiduciary_loan d      
+      SET 
+           
+         a.status=#{status},
+         a.read_time=#{read_time},
+         a.read_name=#{read_name},
+         a.return_time=#{return_time},
+         a.archivet_location=#{archivet_location}
+        
+      where (a.report_id =b.entry_number =#{report_id} and b.entry_number=9 and b.type=0) or ( a.report_id =c.entry_number =#{report_id} and c.entry_number=9 and b.type=0) or ( a.report_id =d.entry_number =#{report_id} and d.entry_number=9 and b.type=0)  
+  </update>
+  
+  <!-- 通过id修改借阅记录 -->
+  <update id="alterBorrowRecord" parameterType="com.antifraud.entity.RecordManageBorrow">
+      UPDATE t_record_manage_borrow      
+      <set>
+         <if test="id != null and id != ''">
+         	id=#{id},
+         </if>  
+         <if test="report_id != null and report_id != ''">
+         	report_id=#{report_id},
+         </if>
+         <if test="status != null and status != ''">
+         	status=#{status},
+         </if>
+         <if test="read_time != null and read_time != ''">
+         	read_time=#{read_time,jdbcType=TIMESTAMP},
+         </if>
+         <if test="read_name != null and read_name != ''">
+         	read_name=#{read_name},
+         </if>
+         <if test="return_time != null and return_time != ''">
+         	return_time=#{return_time,jdbcType=TIMESTAMP},
+         </if>
+         <if test="archivet_location != null and archivet_location != ''">
+         	archivet_location=#{archivet_location},
+         </if>
+      </set>   
+      where id=#{id}
+  </update>
+  
+  <!-- 通过报单编号查询 -->
+	<select id="findRecordByRecordId" resultType="com.antifraud.entity.RecordManageBorrow">
+		select * from  t_record_manage_borrow a,t_house_property_mortgage b,t_vehicle_mortgage c,t_fiduciary_loan d  
+		where (a.report_id =b.entry_number =#{report_id} and b.entry_number=9 ) or ( a.report_id =c.entry_number =#{report_id} and c.entry_number=9 ) or ( a.report_id =d.entry_number =#{report_id} and d.entry_number=9 )  
+	</select>
+	
+	<!-- 全部查询 -->
+	<select id="findAllRecord" resultType="com.antifraud.entity.RecordManageBorrow">
+		select * from t_record_manage_borrow a,t_house_property_mortgage b,t_vehicle_mortgage c,t_fiduciary_loan d 	
+		where (a.report_id =b.entry_number and b.entry_number=9 ) or ( a.report_id =c.entry_number  and c.entry_number=9 ) or ( a.report_id =d.entry_number and d.entry_number=9 )  
+	</select>
+	
+	<!-- 查询所有档案借阅表信息(分组显示)(lujinpeng) -->
+	<select id="findRecordList" resultType="com.antifraud.entity.RecordManageBorrow">
+		select * from t_record_manage_borrow t group by t.report_id
+	</select>
+	
+	<!-- 通过报单编号查询档案借阅信息(lujinpeng) -->
+	<select id="findRecordByReportId" resultType="com.antifraud.entity.RecordManageBorrow">
+		select * from t_record_manage_borrow t where t.report_id=#{report_id}
+	</select>
+	<!-- 通过id查询档案借阅信息(lujinpeng) -->
+	<select id="findRecordById" resultType="com.antifraud.entity.RecordManageBorrow">
+		select * from t_record_manage_borrow where id=#{id}
+	</select>
+	<!-- 通过报单编号查询档案借阅信息的最后一条记录(lujinpeng) -->
+	<select id="getRecordLastByReportId" resultType="com.antifraud.entity.RecordManageBorrow">
+		select * from t_record_manage_borrow t where t.report_id=#{report_id} ORDER BY id desc limit 1
+	</select>
+	
+	<!-- 添加借阅档案记录(lujinpeng) -->
+	<insert id="addRecordBorrow" parameterType="com.antifraud.entity.RecordManageBorrow">
+	   insert into `t_record_manage_borrow`
+	   <trim prefix="(" suffix=")" suffixOverrides="," >
+	     <if test="report_id != null" >
+	       `report_id`,
+	     </if>
+	     <if test="status != null" >
+	       `status`,
+	     </if>
+	     <if test="read_time != null" >
+	       `read_time`,
+	     </if>
+	     <if test="read_name != null" >
+	       `read_name`,
+	     </if>
+	     <if test="return_time != null" >
+	       `return_time`,
+	     </if>
+	     <if test="archivet_location != null" >
+	       `archivet_location`,
+	     </if>
+	     <if test="create_name != null" >
+	       `create_name`,
+	     </if>
+	   </trim>
+	   <trim prefix="values (" suffix=")" suffixOverrides="," >
+	     <if test="report_id != null" >
+	       #{report_id,jdbcType=VARCHAR},
+	     </if>
+	     <if test="status != null" >
+	       #{status,jdbcType=INTEGER},
+	     </if>
+	     <if test="read_time != null" >
+	       #{read_time,jdbcType=TIMESTAMP},
+	     </if>
+	     <if test="read_name != null" >
+	       #{read_name,jdbcType=VARCHAR},
+	     </if>
+	     <if test="return_time != null" >
+	       #{return_time,jdbcType=TIMESTAMP},
+	     </if>
+	     <if test="archivet_location != null" >
+	       #{archivet_location,jdbcType=VARCHAR},
+	     </if>
+	     <if test="create_name != null" >
+	       #{create_name,jdbcType=VARCHAR},
+	     </if>
+	   </trim>
+	</insert>
+	
+	<!-- 分页查询（lujinpeng） -->
+	<select id="findByLimit" resultType="com.antifraud.entity.RecordManageBorrow">
+		select * from t_record_manage_borrow t where t.report_id=#{report_id} order by id desc limit #{page},#{size}
+	</select>
+	
+	<!-- 查询总数 -->
+	<select id="getCount" resultType="java.lang.Integer">
+		select count(*) from t_record_manage_borrow
+		<where>
+			<if test="report_id != null and report_id != ''">
+				report_id=#{report_id}
+			</if>
+		</where>
+	</select>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

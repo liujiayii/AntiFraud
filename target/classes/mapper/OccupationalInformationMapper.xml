@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.antifraud.dao.OccupationalInformationDao" >
+  
+  <insert id="insert" parameterType="com.antifraud.entity.OccupationalIinformation" >
+    insert into t_occupational_information ( entry_number, occupational, 
+      company_name, industry_of_the_company, company_address, 
+      company_mail, commany_tel,starting_work, duty, 
+      professional_title, annual_income, service_rate, 
+      residential_condition, period_of_resident,throw_industry)
+    values ( #{entry_number}, #{occupational}, 
+      #{company_name}, #{industry_of_the_company}, #{company_address}, 
+      #{company_mail}, #{commany_tel},#{starting_work}, #{duty}, 
+      #{professional_title}, #{annual_income}, #{service_rate}, 
+      #{residential_condition}, #{period_of_resident},#{throw_industry})
+  </insert>
+  <select id="findOccupationalInformationByEntry_number" resultType="com.antifraud.entity.OccupationalIinformation">
+	  SELECT *
+	   FROM t_occupational_information 
+	   where entry_number = #{entry_number}  
+	</select>
+</mapper>
