@@ -168,10 +168,15 @@
 	</update>
 
 	<!--详情页通过报单编号查询 -->
-	<select id="findReplenishProcedureByEntry_number" resultType="com.antifraud.entityVO.ReplenishProcedureVo">
+	<!-- <select id="findReplenishProcedureByEntry_number" resultType="com.antifraud.entityVO.ReplenishProcedureVo">
 		select * from t_business_massage a,t_occupational_information b
 		where
 		a.entry_number=#{id} and b.entry_number=#{id}
+	</select> -->
+	<select id="findReplenishProcedureByEntry_number" resultType="com.antifraud.entityVO.ReplenishProcedureVo">
+		select * from t_business_massage a,t_occupational_information b
+		where a.entry_number=b.entry_number
+		and a.entry_number=#{id}
 	</select>
 
 	<!-- 详情页插入补充手续信息 到借款人业务信息表 -->

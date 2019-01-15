@@ -824,10 +824,58 @@
 		affirm_time = #{affirm_time},
 		payment_type =
 		#{payment_type},
+		approval_amount=#{approval_amount},
 		status = #{status},
 		remark = #{remark}
 		where id = #{id}
 
 	</update>
+
+
+	<!-- 修改并保存车辆报单 -->
+	<!-- int  submitDeclarationV(VehicleMortgage vehicleMortgage) -->
+	<update id="submitDeclarationV" parameterType="com.antifraud.entity.VehicleMortgage">
+		update
+			t_vehicle_mortgage
+			set
+				licence_plate=#{licence_plate},
+				name=#{name},
+				id_number=#{id_number},
+				gender=#{gender},
+				age=#{age},
+				marital_status=#{marital_status},
+				education=#{education},
+				diploma=#{diploma},
+				phone=#{phone},
+				home_phone=#{home_phone},
+				business_phone_number=#{business_phone_number},
+				home_address=#{home_address},
+				mailing_address=#{mailing_address},
+				permanent_residence_address=#{permanent_residence_address},
+				email=#{email},
+				spouse_identification_name=#{spouse_identification_name},
+				spouse_identification_number=#{spouse_identification_number},
+				spousal_work_unit=#{spousal_work_unit},
+				spouse_telephone=#{spouse_telephone},
+				relative_contact_name=#{relative_contact_name},
+				domestic_relation=#{domestic_relation},
+				relative_contact_number=#{relative_contact_number},
+				emergency_name=#{emergency_name},
+				emergency_relation=#{emergency_relation},
+				emergency_phone=#{emergency_phone},
+				approval_limit=#{approval_limit},
+				approval_deadline=#{approval_deadline},
+				account_opening_time=#{account_opening_time},
+				type=#{type},
+				affirm_time=#{affirm_time}
+			where
+				entry_number=#{entry_number}
+				
+	
+	</update>
+	
+
+
+
 
 </mapper>

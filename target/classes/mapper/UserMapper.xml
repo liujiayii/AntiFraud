@@ -127,4 +127,37 @@
 		select * from t_user where phone like #{phone}
 	</select>
 	
+	
+	
+	<!--  根据用户id修改用户信息 -->
+	<!--  int updateUserById(@Param("id")Long id,
+					@Param("address")String address,
+					@Param("passWord")String passWord,
+					@Param("post")String post
+					@Param("phone")String phone)； -->
+	<update id="updateUserById">
+		update 
+			t_user
+			set 
+			<if test="address!=null">
+			address=#{address},
+			</if>
+			<if test="phone!=null">
+			phone=#{phone},
+			</if>
+			<if test="key_word!=null">
+			key_word=#{key_word},
+			</if>
+			<if test="passWord!=null">
+				user_pwd=#{passWord},
+			</if>
+			<if test="post!=null">
+				post=#{post},
+			</if>
+			update_time=now()
+		where
+			id=#{id}
+	</update>
+	
+	
 </mapper>

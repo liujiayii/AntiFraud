@@ -418,6 +418,9 @@
 			<if test="spouse_telephone != null and spouse_telephone != ''">
 				spouse_telephone = #{spouse_telephone},
 			</if>
+			<if test="approval_amount != null and approval_amount != ''">
+				approval_amount = #{approval_amount},
+			</if>
 			<if test="relative_contact_name != null and relative_contact_name != ''">
 				relative_contact_name = #{relative_contact_name},
 			</if>
@@ -462,7 +465,7 @@
 	<select id="findById" resultType="com.antifraud.entity.FiduciaryLoan"
 		parameterType="java.lang.Long">
 		select
-		<include refid="Base_Column_List" />
+		*
 		from
 		t_fiduciary_loan
 		where id = #{id}
@@ -819,6 +822,45 @@ from
 	</update>
 	
 	
+	
+	<!-- 修改并保存信贷报单 -->
+	<!-- int submitDeclarationF(FiduciaryLoan fiduciaryLoan) -->
+	<update id="submitDeclarationF" parameterType="com.antifraud.entity.FiduciaryLoan">
+		update
+			t_fiduciary_loan
+			set
+			name=#{name},
+			id_number=#{id_number},
+			gender=#{gender},
+			age=#{age},
+			marital_status=#{marital_status},
+			education=#{education},
+			diploma=#{diploma},
+			phone=#{phone},
+			home_phone=#{home_phone},
+			business_phone_number=#{business_phone_number},
+			home_address=#{home_address},
+			mailing_address=#{mailing_address},
+			permanent_residence_address=#{permanent_residence_address},
+			email=#{email},
+			spouses_name=#{spouses_name},
+			spouse_identification_number=#{spouse_identification_number},
+			spousal_work_unit=#{spousal_work_unit},
+			spouse_telephone=#{spouse_telephone},
+			relative_contact_name=#{relative_contact_name},
+			domestic_relation=#{domestic_relation},
+			relative_contact_number=#{relative_contact_number},
+			emergency_name=#{emergency_name},
+			emergency_relation=#{emergency_relation},
+			emergency_phone=#{emergency_phone},
+			apply_for_limit=#{apply_for_limit},
+			apply_for_deadline=#{apply_for_deadline},
+			account_opening_time=#{account_opening_time},
+			type=#{type},
+			affirm_time=#{affirm_time}
+		where
+			entry_number=#{entry_number}
+	</update>
 	
 	
 </mapper>

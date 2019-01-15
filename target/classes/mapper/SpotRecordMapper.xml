@@ -149,5 +149,80 @@
 	  SELECT * from t_spot_record where trid=#{trid}
 	
 	</select>
-
+	
+	<!-- 通过电话查询面审实地模块房产信息 （lujinpeng）-->
+	<select id="findHouseInfoByPhoneOrName" resultType="com.antifraud.entity.HousePropertyMortgage">
+		SELECT 
+			h.entry_number entry_number, h.`name` name, h.phone phone, h.create_time create_time 
+		FROM 
+			t_spot_record s, t_house_property_mortgage h 
+		WHERE
+			s.report_id = h.entry_number  
+			
+			<if test="phone != null and phone != ''">
+				and h.phone like concat('%',#{phone},'%')
+			</if>
+			<if test="name != null and name != ''">
+				and h.name like concat('%',#{name},'%')
+			</if>
+			<!-- 分控外勤人员id -->
+			<if test="user_id != null and user_id != '' ">
+				and h.risk_management = #{user_id}
+			</if>
+			group by h.entry_number 							 
+		 	<if test="page != null and limit != null">
+		 		LIMIT #{page},#{limit}
+		 	</if>
+	</select>
+	
+	<!-- 通过电话查询面审实地模块信贷信息 （lujinpeng）-->
+	<select id="findFiduciaryLoanByPhoneOrName" resultType="com.antifraud.entity.FiduciaryLoan">
+		SELECT 
+			f.entry_number entry_number, f.`name` name, f.phone phone, f.create_time create_time 
+		FROM 
+			t_spot_record s, t_fiduciary_loan f 
+		WHERE
+			s.report_id = f.entry_number  
+			
+			<if test="phone != null and phone != ''">
+				and f.phone like concat('%',#{phone},'%')
+			</if>
+			<if test="name != null and name != ''">
+				and f.name like concat('%',#{name},'%')
+			</if>
+			<!-- 分控外勤人员id -->
+			<if test="user_id != null and user_id != '' ">
+				and f.risk_management = #{user_id}
+			</if>
+			group by f.entry_number 							 
+		 	<if test="page != null and limit != null">
+		 		LIMIT #{page},#{limit}
+		 	</if>
+	</select>
+	
+	<!-- 通过电话查询面审实地模块车贷信息 （lujinpeng）-->
+	<select id="findVehicleMortgageByPhoneOrName" resultType="com.antifraud.entity.VehicleMortgage">
+		SELECT 
+			v.entry_number entry_number, v.`name` name, v.phone phone, v.create_time create_time 
+		FROM 
+			t_spot_record s, t_vehicle_mortgage v 
+		WHERE
+			s.report_id = v.entry_number  
+			
+			<if test="phone != null and phone != ''">
+				and v.phone like concat('%',#{phone},'%')
+			</if>
+			<if test="name != null and name != ''">
+				and v.name like concat('%',#{name},'%')
+			</if>
+			<!-- 分控外勤人员id -->
+			<if test="user_id != null and user_id != '' ">
+				and v.risk_management = #{user_id}
+			</if>
+			group by v.entry_number 							 
+		 	<if test="page != null and limit != null">
+		 		LIMIT #{page},#{limit}
+		 	</if>
+	</select>
+	
 </mapper>
