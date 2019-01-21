@@ -154,7 +154,8 @@
                	/riskManagement/view/faceTrial/creditTrial.jsp* =perms[credit:interviewing:earnest]
                 <!-- 权限管理 -->
                 /riskManagement/view/accessMangement/accessMangement.jsp* =perms[authority:management]
-                
+                <!-- U盾管理 -->
+                /riskManagement/view/uShieldAdministration/ushieldAdministration.jsp* = perms[Ukey:admin]
                 <!-- 剩余其他路径，必须认证通过才可以访问 -->
                 /** = authc
             </value>

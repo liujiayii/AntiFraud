@@ -1,8 +1,0 @@
-username=risk_control
-password=rVwg4l3AKJdKOK8q
-driver=com.mysql.jdbc.Driver
-
-url=jdbc:mysql://rm-2zevg57y72dr9u1go.mysql.rds.aliyuncs.com:3306/risk_control_system?useUnicode=true&characterEncoding=UTF-8
-#initPoolSize=5
-#maxPoolSize=10
-is.check_ukey=false

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.antifraud.dao.ManagementAfterLoanDao">
+	<resultMap id="BaseResultMap" type="com.antifraud.entity.TManagementAfterLoan">
+		<result column="id" property="id" />
+		<result column="amount" property="amount"  />
+		<result column="bidId" property="bidId"  />
+		<result column="is_overdue" property="is_overdue"  />
+		<result column="mobile" property="mobile"  />
+		<result column="period" property="period"  />
+		<result column="realName" property="realName"  />
+		<result column="repayment_time" property="repayment_time" />
+		<result column="total_period" property="total_period" />
+		<result column="userId" property="userId" />
+		<result column="newest" property="newest" />
+		<result column="remaker" property="remaker" />
+		<result column="entry_number" property="entry_number" />
+		
+	</resultMap>
+
+	<insert id="insert" parameterType="com.antifraud.entity.TManagementAfterLoan">
+		insert into t_management_after_loan (id, amount, bidId,
+		is_overdue, mobile, period,
+		realName, repayment_time, total_period,
+		userId, newest, remaker, entry_number)
+		values (#{id}, #{amount}, #{bidId},
+		#{is_overdue}, #{mobile}, #{period},
+		#{realName}, #{repayment_time}, #{total_period},
+		#{userId}, #{newest},#{remaker},#{entry_number})
+	</insert>
+
+	<!-- 查询newest最大值 -->
+	<select id="selectBigestNewest" resultType="java.lang.Long">
+		SELECT MAX(newest) FROM t_management_after_loan
+	</select>
+
+	<!-- 根据Newest查询数据 -->
+	<select id="selectByNewest" resultMap="BaseResultMap">
+		SELECT * FROM t_management_after_loan WHERE newest = #{newest} limit
+		#{star},#{limit}
+	</select>
+	<!-- 获取Newest查询数据的数量 -->
+	<select id="selectByNewestCount" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM t_management_after_loan WHERE newest = #{newest}
+	</select>
+	<!-- 根据报单编号获取数据 -->
+	<select id="selectByEntry_number" resultMap="BaseResultMap">
+		SELECT * FROM t_management_after_loan WHERE entry_number = #{entry_number} ORDER BY period DESC 
+	</select>
+	<!-- 根据报单编号获取数据 数量-->
+	<select id="selectByEntry_numberCount" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM t_management_after_loan WHERE entry_number = #{entry_number}  
+	</select>
+	<!-- 根据id获取单挑数据信息-->
+	<select id="findOne" resultType="com.antifraud.entity.TManagementAfterLoan">
+		SELECT * FROM t_management_after_loan WHERE id = #{id}  
+	</select>
+	
+	<update id="updateById" parameterType="com.antifraud.entity.TManagementAfterLoan" >
+    update t_management_after_loan
+    set 
+      remarker = #{remaker}
+      where id =#{id}
+  </update>
+
+</mapper>

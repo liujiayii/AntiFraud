@@ -1,0 +1,134 @@
+//激活垂直导航栏
+$(document).ready(function() {
+	navActive(11);
+	secondNavActive('#accessMangements dd', 0)
+});
+function creditEvaluation() {
+	layui.use([ 'table' ], function() {
+		var table = layui.table;
+
+		// 第一个实例
+		table.render({
+			id : 'testReload',
+			page : {theme : '#405467'},
+			even : true,
+			skin : 'line', // 行边框风格
+			response : { statusCode : 1 },// 规定成功的状态码，默认：0
+			elem : '#realEstateMortgage',
+			url : '',
+			cols : [ [ // 表头
+			{
+				field : 'name',
+				title : '编号'
+			}, {
+				field : 'phone',
+				title : '姓名'
+			}, {
+				field : 'id_number',
+				title : '加密锁ID'
+			}, {
+				field : 'emergency_name',
+				title : '密钥'
+			}, {
+				field : 'status',
+				title : '状态',
+				templet : function(d) {
+					if (d.status == '1') {
+						return "<span class='failed'>正常</span>"
+					} else if (d.status == '0') {
+						return "<span class='pass'>未设置</span>"
+					} 
+				}
+			}, {
+				field : 'operation',
+				title : '操作',
+				toolbar : '#operation'
+			}, ] ]
+		});
+
+		// 搜索
+
+		var active = {
+			reload : function() {
+				// 执行重载
+				table.reload('testReload', {
+					url : '',
+					page : {
+						curr : 1
+					// 重新从第 1 页开始
+					},
+					where : {
+						phone : $('#demoReload').val(),
+						temp : "assetEvaluation"
+					},
+					done : function() {
+					}
+				});
+			}
+		};
+	
+		$('#demoReload').on('input', function() {
+			var type = $(this).data('type');
+			active[type] ? active[type].call(this) : '';
+		});
+
+		// 监听行工具事件
+		table.on('tool(realEstateMortgage)', function(obj) {
+			var data = obj.data;
+			if (obj.event == 'edit') {
+				
+			} else if (obj.event == 'modify') {
+				window.location.href = 'ushieldAdministrationUppdate.jsp?id=' + data.id;
+			} 
+		});
+
+	});
+
+}
+function accessMangementAdd() {
+	layui.use([ 'form' ], function() {
+		var form = layui.form;
+
+		// 监听提交
+		form.on('submit(accessAdd)', function(data) {
+				$.ajax({
+					url : '',
+					type : 'post',
+					dataType : 'json',
+					data : data.field,
+					success : function(obj) {
+						// 墨绿深蓝风
+						layerMsgPath(obj.msg, 'accessMangement.jsp', '')
+					}
+				})
+		})
+	})
+}
+function accessMangementRevamp() {
+	onLoadPageRevamp('id');
+	layui.use([ 'form' ], function() {
+		var form = layui.form;
+		// 监听提交
+
+		form.on('submit(accessRevamp)', function(data) {
+			if (data.field.user_pwd === data.field.user_pwd_verify) {
+				
+				$.ajax({
+					url : '/user/updateUserById.action',
+					type : 'post',
+					dataType : 'json',
+					data : data.field,
+					success : function(obj) {
+						layerMsgPath(obj.msg, 'accessMangement.jsp', '')
+					}
+				})
+
+			} else {
+				layerClose('两次输入的密码不同')
+			}
+
+			return false; // 阻止表单跳转。如果需要表单跳转，去掉这段即可。
+		})
+
+	})
+}

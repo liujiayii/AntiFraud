@@ -25,7 +25,6 @@ public class LoginFilter implements Filter {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse rep = (HttpServletResponse) response;
 		String currentURL = req.getRequestURI();
-		System.out.println("currentURL"+currentURL);
 		if (currentURL.contains("toLogin")) {
 			//放行
 			chain.doFilter(req, rep);
