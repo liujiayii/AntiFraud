@@ -145,7 +145,10 @@
     select 
     <include refid="Base_Column_List" />
     from t_ukey
-    where ukey_sn = #{ukey_sn}
+    where ukey_sn LIKE CONCAT('%', #{ukey_sn}, '%')
+    <if test="star != null and limit != null">
+    LIMIT #{star},#{limit}
+    </if>
   </select>
   
   <!-- 分页查询  -->

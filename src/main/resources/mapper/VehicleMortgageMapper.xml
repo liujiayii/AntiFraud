@@ -874,6 +874,47 @@
 	
 	</update>
 	
+	
+	
+	
+		<!-- 根据日期查询首页车辆报单信息 -->
+	<!-- BigDecimal findByDate(@Param("year")String year,@Param("month")String month,@Param("day")String day);-->
+	<select id="findByDate" resultType="java.math.BigDecimal">
+		SELECT sum(approval_limit)
+		FROM
+		t_vehicle_mortgage
+		<where>
+			<if test="year!=null">
+				AND year(create_time) = #{year}
+			</if>
+			<if test="month!=null">
+				AND month(create_time )= #{month}
+			</if>
+			<if test="day!=null">
+				AND day(create_time)=#{day}
+			</if>
+		</where>
+	</select>
+
+	
+	<!-- 根据日期查询首页车辆报单总数量 -->
+	<!-- Integer findByCount(@Param("year")String year,@Param("month")String month,@Param("day")String day) -->
+	<select id="findByCount" resultType="java.lang.Integer">
+		SELECT count(*) 
+		FROM 
+		t_vehicle_mortgage
+		<where>
+			<if test="year!=null">
+				AND year(create_time) = #{year}
+			</if>
+			<if test="month!=null">
+				AND month(create_time )= #{month}
+			</if>
+			<if test="day!=null">
+				AND day(create_time)=#{day}
+			</if>
+		</where>
+	</select>
 
 
 

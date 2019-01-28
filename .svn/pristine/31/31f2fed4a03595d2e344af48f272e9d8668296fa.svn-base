@@ -22,6 +22,7 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
+import org.apache.shiro.web.session.HttpServletSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,6 +41,7 @@ import com.antifraud.utils.DesUtil;
 import com.antifraud.utils.MD5Encrypt;
 import com.antifraud.utils.ResultInfo;
 import com.softkey.SoftKey;
+import com.softkey.jsyunew3;
 
 /**
  * @ClassName: LoginController
@@ -53,7 +55,7 @@ public class LoginController {
 	private final Logger logger = Logger.getLogger(LoginController.class);
 	@Autowired
 	UserService userService;
-
+	
 	@Autowired
 	UkeyService ukeyService;
 
@@ -74,8 +76,8 @@ public class LoginController {
 	 * @createDate 2018年9月27日 下午6:05:23
 	 */
 	@RequestMapping("/toLogin")
-	public ModelAndView toLogin(HttpServletRequest request) {
-
+	public ModelAndView toLogin(HttpServletRequest request) {	
+		
 		/** 生成随机数 */
 		int number_1 = (int) (Math.random() * 65535) + 1;
 		int number_2 = (int) (Math.random() * 65535) + 1;
@@ -135,7 +137,7 @@ public class LoginController {
 					// 获取登录用户
 					// User user =
 					// (User)SecurityUtils.getSubject().getPrincipal();
-					if (user.getImg_url() == null || user.getImg_url().equals("")) {
+					if ( user.getImg_url() == null||  user.getImg_url().equals("")) {
 						// 查询数据库没有图片
 						img = 0;
 						map.put("img", img);
@@ -197,7 +199,7 @@ public class LoginController {
 	@ResponseBody
 	public Map<String, Object> loginUser(String username, String password, HttpSession session, HttpServletRequest req,
 			HttpServletResponse resp) {
-
+		
 		Map<String, Object> map = new HashMap<>();
 		String key = "yunqueadmin";
 		/** 加密狗身份认证 */
@@ -220,16 +222,16 @@ public class LoginController {
 				npe.printStackTrace();
 				map.put("code", 1);
 				map.put("msg", "请添加U盾");
-
+				
 				return map;
 			} catch (Exception e) {
 				e.printStackTrace();
 				map.put("code", -1);
 				map.put("msg", "系统异常");
-
+				
 				return map;
 			}
-			// 判断增强密钥是否为空
+			//判断增强密钥是否为空
 			if (ukey.getUkey_ckey() == null) {
 				map.put("code", 1);
 				map.put("msg", "请设置增强密钥后登录");
@@ -410,30 +412,29 @@ public class LoginController {
 		}
 
 	}
-
+	
 	/**
 	 * 检查用户登录是否合法
 	 *
 	 * @Title: checkLogin
-	 * 
-	 * @description
+	
+	 * @description 
 	 *
 	 * @param key
 	 * @param username
 	 * @param password
 	 * @param map
-	 * @param session
-	 *            void
+	 * @param session 	   
+	 * void 
 	 *
 	 * @author lujinpeng
 	 * @createDate 2018年12月26日-上午10:06:35
 	 */
-	private Map<String, Object> checkLogin(String key, String username, String password, Map<String, Object> map,
-			HttpSession session) {
-		int code = 0;
+	private Map<String, Object> checkLogin(String key, String username, String password, Map<String, Object> map, HttpSession session) {
+		int code =0;
 		int img = 0;
 		String msg = "";
-
+		
 		// 获取主体
 		Subject subject = SecurityUtils.getSubject();
 		// 用户名和密码信息
@@ -443,10 +444,10 @@ public class LoginController {
 		// 获取用户
 		User user = userService.findUserByname(username);
 		try {
-
+			
 			// 登录成功
 			subject.login(token);
-			if (user.getImg_url() == null || user.getImg_url().equals("")) {
+			if (user.getImg_url()==null ||user.getImg_url().equals("")) {
 				// 查询数据库没有图片
 				img = 0;
 				map.put("img", img);
@@ -462,17 +463,17 @@ public class LoginController {
 			map.put("msg", msg);
 			map.put("status", user.getStatus());
 			session.setAttribute("user", user);
-			session.setAttribute("user_id", user.getId());
-
+			session.setAttribute("user_id",user.getId());
+			
 		} catch (AuthenticationException ex) {
 			code = -1;
 			msg = "用户名或密码错误";
 			map.put("code", code);
-			map.put("msg", msg);
-
+			map.put("msg", msg);			
+			
 		}
-
+		
 		return map;
 	}
-
+	
 }

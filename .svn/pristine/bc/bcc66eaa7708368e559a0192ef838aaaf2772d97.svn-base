@@ -180,25 +180,7 @@ layui.use([ 'table', 'laydate' ], function() {
 		type : 'year',
 		max : timeStamp2String(new Date()),
 		done : function(value, date) {
-			$.ajax({
-				url : '/findByDay.action',
-				type : 'POST',
-				data: {
-					date: value+'',
-				},
-				dataType : 'JSON',
-				success : function(obj) {
-					console.log(obj)
-					$('.housing').text(obj.houseCount);
-					$('.car').text(obj.carCount);
-					$('.credit').text(obj.xinCount);
-					$('.all').text(obj.amount);
-					$('.housing_money').text(obj.houseSum);
-					$('.car_money').text(obj.carSum);
-					$('.credit_money').text(obj.xinSum);
-					$('.all_money').text(obj.sum);
-				}
-			});
+			alert('你选择的日期是：' + value + '\n获得的对象是' + JSON.stringify(date));
 		}
 	});
 	// 年月选择器
@@ -207,24 +189,7 @@ layui.use([ 'table', 'laydate' ], function() {
 		type : 'month',
 		max : timeStamp2String(new Date()),
 		done : function(value, date) {
-			$.ajax({
-				url : '/findByDay.action',
-				type : 'POST',
-				data: {
-					date: value+'',
-				},
-				dataType : 'JSON',
-				success : function(obj) {
-					$('.housing').text(obj.houseCount);
-					$('.car').text(obj.carCount);
-					$('.credit').text(obj.xinCount);
-					$('.all').text(obj.amount);
-					$('.housing_money').text(obj.houseSum);
-					$('.car_money').text(obj.carSum);
-					$('.credit_money').text(obj.xinSum);
-					$('.all_money').text(obj.sum);
-				}
-			});
+			alert('你选择的日期是：' + value + '\n获得的对象是' + JSON.stringify(date));
 		}
 	});
 	// 时间选择器
@@ -232,25 +197,7 @@ layui.use([ 'table', 'laydate' ], function() {
 		elem : '#test3',
 		max : timeStamp2String(new Date()),
 		done : function(value, date) {
-			$.ajax({
-				url : '/findByDay.action',
-				type : 'POST',
-				data: {
-					date: value+'',
-				},
-				dataType : 'JSON',
-				success : function(obj) {
-					console.log(obj)
-					$('.housing').text(obj.houseCount);
-					$('.car').text(obj.carCount);
-					$('.credit').text(obj.xinCount);
-					$('.all').text(obj.amount);
-					$('.housing_money').text(obj.houseSum);
-					$('.car_money').text(obj.carSum);
-					$('.credit_money').text(obj.xinSum);
-					$('.all_money').text(obj.sum);
-				}
-			});
+			alert('你选择的日期是：' + value + '\n获得的对象是' + JSON.stringify(date));
 		}
 	});
 	// 第一个实例
