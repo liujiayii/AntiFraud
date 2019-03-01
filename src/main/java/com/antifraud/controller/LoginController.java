@@ -313,7 +313,6 @@ public class LoginController {
 	@RequestMapping(value = "/showAuthCode")
 	public void showAuthCode(HttpSession session, HttpServletResponse resp, Model model) {
 
-		System.out.println("45464");
 		int width = 150; // 宽
 		int height = 60; // 高
 		int codeCount = 4; // 产生随机的数量

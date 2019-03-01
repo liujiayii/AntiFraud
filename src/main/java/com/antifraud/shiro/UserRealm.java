@@ -39,7 +39,6 @@ public class UserRealm extends AuthorizingRealm {
     	//转换token
     	UsernamePasswordToken usernamePawworedToken = (UsernamePasswordToken) token;
     	
-    	
     	//根据用户名查询用户信息
     	User user = userService.findUserByname(usernamePawworedToken.getUsername());
     	
@@ -67,7 +66,6 @@ public class UserRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection princ) {
-    	
     	SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
     	//根据当前登录用户查询对应角色和权限
     	Subject subject = SecurityUtils.getSubject();

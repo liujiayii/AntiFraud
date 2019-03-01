@@ -906,7 +906,7 @@
 
 	</update>
 	<!-- 资产评估修改字段 -->
-	<update id="updatefield">
+	<update id="updatefield" parameterType="com.antifraud.entity.HousePropertyMortgage">
 		update
 		t_house_property_mortgage
 		set
