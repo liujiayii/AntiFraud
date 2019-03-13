@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.antifraud.dao.QuestionTopicDao">
+	<!-- 公共sql片段 -->
+	<sql id="Base_Column_List">
+		id,
+		topic,
+		status,
+		create_time,
+		update_time
+	</sql>
+	<!-- 添加的方法 -->
+	<insert id="addQuestion" parameterType="com.antifraud.entity.QuestionTopic">
+		insert into
+		t_question_topic(
+		id,
+		topic,
+		status,
+		create_time,
+		update_time
+		)values(
+		#{id},
+		#{topic},
+		#{status},
+		#{create_time},
+		#{update_time}
+		)
+	</insert>
+	<!-- 通过id查询 -->
+	<select id="findById" resultType="com.antifraud.entity.QuestionTopic">
+		select 
+		  <include refid="Base_Column_List" />
+		from 
+		  t_question_topic
+		where
+		  id=#{id}
+	</select>
+	<!-- 查询所有题目 -->
+	<select id="findAll">
+		select 
+		  <include refid="Base_Column_List" />
+		from 
+		  t_question_topic
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</mapper>
