@@ -44,7 +44,7 @@
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid</artifactId>
-			<version>1.0.23</version>
+			<version>1.2.10</version>
 		</dependency>
 
 		<!-- 添加JUNIT测试依赖 -->
