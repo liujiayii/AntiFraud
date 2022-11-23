@@ -11,7 +11,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
-			<version>5.2.7.RELEASE</version>
+			<version>6.0.1</version>
 		</dependency>
 		<!-- 整合jackson,spring mvc可以借助这组API将 java对象转换为JSON串 -->
 		<dependency>
